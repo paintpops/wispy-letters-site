@@ -12,7 +12,7 @@
 <body>
     <header>
         <nav>
-            <div class="logo">Wispy Letters</div>
+            <div class="logo"><img src="GlobalAssets/wispyletters_logo.svg" alt="Wispy Letters"></div>
             <ul class="nav-links">
                 <li><a href="#services">Services</a></li>
                 <li><a href="#portfolio">Portfolio</a></li>
@@ -30,18 +30,17 @@
                     <img src="SectionTitles/beautifullywritten.svg" alt="Written Beautifully" class="hero-svg hero-svg-right">
                 </div>
                 <div class="hero-photos">
-                    <img src="photos/socialposts/asteroidcity.jpg" alt="Calligraphy Work" class="hero-photo">
+                    <img src="Photos/socialposts/asteroidcity.jpg" alt="Calligraphy Work" class="hero-photo">
                     <img src="Photos/invitations/Taylor&Porter_L&DWedding_075.jpg" alt="Wedding Invitation" class="hero-photo">
                 </div>
             </div>
-            <p class="tagline">Transform your special moments with timeless, handcrafted calligraphy</p>
-            <a href="#contact" class="cta-button">Get Started</a>
         </div>
     </section>
 
     <section id="services" class="services">
         <div class="container">
-            <h2>Services</h2>
+            <img src="SectionTitles/services_title.svg" alt="Services">
+            <p class="section-subtitle">Wispy Letters is a calligraphy and design studio serving New York City and Long Island. We specialize in modern and elegant scripts through custom commissions, on-site events, and workshops.</p>
             <div class="services-grid">
                 <div class="service-card">
                     <div class="service-icon">✉️</div>
@@ -106,9 +105,10 @@
 
     <section id="contact" class="contact">
         <div class="container">
-            <h2>Let's Create Something Beautiful</h2>
-            <p class="section-subtitle">Ready to start your project? Get in touch today</p>
-            <form class="contact-form">
+            <img src="SectionTitles/contact_title.svg" alt="Let's Create Something Beautiful">
+            <div class="contact-content-wrapper">
+                <p class="section-subtitle">Ready to start your project? Get in touch today</p>
+                <form class="contact-form">
                 <div class="form-row">
                     <input type="text" placeholder="Your Name" required>
                     <input type="email" placeholder="Your Email" required>
@@ -126,7 +126,8 @@
                 </div>
                 <textarea placeholder="Tell me about your project..." rows="5" required></textarea>
                 <button type="submit" class="submit-button">Send Message</button>
-            </form>
+                </form>
+            </div>
         </div>
     </section>
 
@@ -164,6 +165,20 @@
 
             lastScrollTop = scrollTop;
         });
+
+        // Animate services title on scroll
+        const servicesTitle = document.querySelector('.services .container > img');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        if (servicesTitle) {
+            observer.observe(servicesTitle);
+        }
     </script>
 </body>
 </html>
