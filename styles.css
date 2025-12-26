@@ -149,11 +149,18 @@ nav {
     line-height: 1.2;
 }
 
+.hero-main-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6rem;
+    margin-bottom: 20px;
+}
+
 .hero-svg-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
     gap: -1rem;
 }
 
@@ -168,11 +175,14 @@ nav {
     max-height: 600px;
     width: auto;
     object-fit: contain;
+    opacity: 0;
+    animation: fadeUpPhoto 1s ease-out forwards;
 }
 
 .hero-photo:first-child {
     position: relative;
     z-index: 1;
+    animation-delay: 0s;
 }
 
 .hero-photo:last-child {
@@ -180,6 +190,7 @@ nav {
     margin-left: -100px;
     margin-top: 15vh;
     z-index: 2;
+    animation-delay: 0.3s;
 }
 
 .hero-svg {
@@ -221,6 +232,17 @@ nav {
     to {
         opacity: 1;
         transform: translateY(0) translateX(3rem);
+    }
+}
+
+@keyframes fadeUpPhoto {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
