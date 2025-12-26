@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wispy Letters | Professional Calligraphy Services</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Wispy Letters</div>
+            <ul class="nav-links">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-svg-container">
+                <img src="SectionTitles/beautifulwords.svg" alt="Beautiful Words" class="hero-svg hero-svg-left">
+                <img src="SectionTitles/beautifullywritten.svg" alt="Written Beautifully" class="hero-svg hero-svg-right">
+                <div class="hero-photos">
+                    <img src="photos/socialposts/asteroidcity.jpg" alt="Calligraphy Work" class="hero-photo">
+                    <img src="Photos/invitations/Taylor&Porter_L&DWedding_075.jpg" alt="Wedding Invitation" class="hero-photo">
+                </div>
+            </div>
+            <p class="tagline">Transform your special moments with timeless, handcrafted calligraphy</p>
+            <a href="#contact" class="cta-button">Get Started</a>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">✉️</div>
+                    <h3>Wedding Invitations</h3>
+                    <p>Elegant, personalized wedding invitations and envelope addressing that set the tone for your special day</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🎁</div>
+                    <h3>Event Stationery</h3>
+                    <p>Custom place cards, menu cards, and signage for weddings, corporate events, and celebrations</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🖋️</div>
+                    <h3>Custom Artwork</h3>
+                    <p>Bespoke calligraphy pieces, quotes, and artwork perfect for gifts or home decor</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📜</div>
+                    <h3>Certificates & Awards</h3>
+                    <p>Professional calligraphy for diplomas, certificates, and corporate recognition</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2>Portfolio</h2>
+            <p class="section-subtitle">A glimpse of recent work</p>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <div class="portfolio-placeholder">Wedding Suite</div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-placeholder">Custom Quote</div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-placeholder">Envelope Addressing</div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-placeholder">Event Signage</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About</h2>
+                    <p>With over a decade of experience in the art of calligraphy, I specialize in creating beautiful, handcrafted lettering for life's most meaningful moments.</p>
+                    <p>Each piece is carefully crafted with attention to detail, using traditional techniques and premium materials to ensure your project is truly unforgettable.</p>
+                    <p>Whether you're planning a wedding, hosting a special event, or looking for a unique gift, I work closely with you to bring your vision to life.</p>
+                </div>
+                <div class="about-image">
+                    <div class="image-placeholder">Calligrapher at Work</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Let's Create Something Beautiful</h2>
+            <p class="section-subtitle">Ready to start your project? Get in touch today</p>
+            <form class="contact-form">
+                <div class="form-row">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-row">
+                    <input type="tel" placeholder="Phone Number">
+                    <select required>
+                        <option value="">Select a Service</option>
+                        <option value="wedding">Wedding Invitations</option>
+                        <option value="event">Event Stationery</option>
+                        <option value="artwork">Custom Artwork</option>
+                        <option value="certificates">Certificates & Awards</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <textarea placeholder="Tell me about your project..." rows="5" required></textarea>
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Wispy Letters. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#">Instagram</a>
+                <a href="#">Pinterest</a>
+                <a href="#">Facebook</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let lastScrollTop = 0;
+        const header = document.querySelector('header');
+
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop === 0) {
+                // At the top of the page
+                header.classList.remove('nav-hidden');
+                header.classList.remove('nav-visible');
+            } else if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down
+                header.classList.add('nav-hidden');
+                header.classList.remove('nav-visible');
+            } else if (scrollTop < lastScrollTop) {
+                // Scrolling up
+                header.classList.remove('nav-hidden');
+                header.classList.add('nav-visible');
+            }
+
+            lastScrollTop = scrollTop;
+        });
+    </script>
+</body>
+</html>
