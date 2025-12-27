@@ -146,6 +146,12 @@ nav {
     background: transparent;
     text-align: center;
     padding-top: 80px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    transition: opacity 0.6s ease;
 }
 
 .hero-content h1 {
@@ -201,7 +207,7 @@ nav {
 
 .hero-svg {
     width: 60vw;
-    max-width: 800px;
+    max-width: 1024px;
     height: auto;
     opacity: 0;
     animation: fadeUp 1s ease-out forwards;
@@ -289,6 +295,95 @@ nav {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
+/* Hero Spacer */
+.hero + .video-section::before {
+    content: '';
+    display: block;
+    height: 100vh;
+}
+
+/* Video Section */
+.video-section {
+    padding: 100px 20px;
+    background: transparent;
+    position: relative;
+    z-index: 10;
+}
+
+.video-container {
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.video-container video {
+    width: 60vw;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    transition: width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.video-container.expanded video {
+    width: 80vw;
+}
+
+/* Gallery Section */
+.gallery {
+    padding: 100px 20px;
+    background: transparent;
+}
+
+.gallery-content {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
+
+.gallery .hero-photos {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    flex: 1;
+}
+
+.gallery .hero-photo {
+    max-height: 600px;
+    width: auto;
+    object-fit: contain;
+    opacity: 0;
+    animation: fadeUpPhoto 1s ease-out forwards;
+    animation-play-state: paused;
+}
+
+.gallery .hero-photo.animate {
+    animation-play-state: running;
+}
+
+.gallery .hero-photo:first-child {
+    position: relative;
+    z-index: 1;
+    animation-delay: 0s;
+}
+
+.gallery .hero-photo:last-child {
+    position: relative;
+    margin-left: -100px;
+    margin-top: 15vh;
+    z-index: 2;
+    animation-delay: 0.3s;
+}
+
+.gallery-text {
+    flex: 1;
+    max-width: 500px;
+}
+
+.gallery-text p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
 /* Services Section */
 .services {
     padding: 100px 20px;
@@ -303,12 +398,12 @@ nav {
 }
 
 .services h2 img {
-    max-height: 100px;
+    max-height: 7rem;
     width: auto;
 }
 
 .services .container > img {
-    max-height: 100px;
+    max-height: 5rem;
     width: auto;
     display: block;
     margin: 0 auto 20px;
@@ -323,32 +418,44 @@ nav {
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
+    grid-template-columns: 1fr;
+    gap: 5rem;
     margin-top: 40px;
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .service-card {
-    text-align: center;
-    padding: 40px 30px;
-    background: var(--light-bg);
-    border-radius: 4px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+    padding: 20px 0;
 }
 
-.service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+.service-image {
+    flex-shrink: 0;
 }
 
-.service-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
+.service-image img {
+    width: 30rem;
+    height: 20rem;
+    object-fit: cover;
+}
+
+.service-content {
+    flex: 1;
+}
+
+.service-content img {
+    max-height: 5rem;
+    width: auto;
+    margin-bottom: 10px;
 }
 
 .service-card h3 {
-    font-size: 1.6rem;
-    margin-bottom: 15px;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
     color: var(--primary-color);
 }
 
@@ -409,6 +516,45 @@ nav {
     color: var(--secondary-color);
 }
 
+/* Clients Section */
+.clients {
+    padding: 100px 20px;
+    background: transparent;
+}
+
+.clients h2 {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 60px;
+    color: var(--primary-color);
+}
+
+.clients-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.client-logo {
+    aspect-ratio: 3/2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+}
+
+.client-logo img {
+    max-width: 100%;
+    max-height: 3rem;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0);
+}
+
 /* About Section */
 .about {
     padding: 100px 20px;
@@ -451,6 +597,105 @@ nav {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.8rem;
     color: var(--secondary-color);
+}
+
+/* Instagram Feed Section */
+.instagram-feed {
+    padding: 100px 20px;
+    background: transparent;
+}
+
+.instagram-feed h2 {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.instagram-handle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-bottom: 60px;
+}
+
+.instagram-embed-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Behold Instagram Feed */
+#behold-feed {
+    width: 100%;
+    min-height: 400px;
+}
+
+/* Hide placeholder when Behold feed is present */
+#behold-feed:not(:empty) ~ .instagram-placeholder {
+    display: none;
+}
+
+/* Behold feed will automatically style itself, but we can add some container styles */
+#behold-feed figure {
+    margin: 0;
+    width: 100%;
+}
+
+/* Instagram placeholder styles */
+.instagram-placeholder {
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px dashed var(--text-light);
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+}
+
+.instagram-placeholder p {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+.instagram-placeholder ol {
+    text-align: left;
+    max-width: 500px;
+    margin: 0 auto 30px;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+.instagram-placeholder ol li {
+    margin-bottom: 10px;
+}
+
+.instagram-placeholder a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.instagram-placeholder a:hover {
+    color: var(--primary-color);
+}
+
+.instagram-link {
+    display: inline-block;
+    padding: 12px 32px;
+    background: var(--secondary-color);
+    color: var(--white) !important;
+    text-decoration: none;
+    border-radius: 2px;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.instagram-link:hover {
+    background: var(--primary-color) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Contact Section */
