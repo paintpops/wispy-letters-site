@@ -289,10 +289,13 @@
             if (videoRect.top <= 0 && videoRect.top >= -window.innerHeight) {
                 const fadeProgress = Math.abs(videoRect.top) / window.innerHeight;
                 heroSection.style.opacity = 1 - fadeProgress;
+                heroSection.style.display = 'flex';
             } else if (videoRect.top > 0) {
                 heroSection.style.opacity = 1;
+                heroSection.style.display = 'flex';
             } else {
                 heroSection.style.opacity = 0;
+                heroSection.style.display = 'none';
             }
         });
     </script>

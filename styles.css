@@ -625,20 +625,25 @@ nav {
 }
 
 /* Behold Instagram Feed */
-#behold-feed {
+.instagram-embed-wrapper [data-behold-id] {
     width: 100%;
     min-height: 400px;
 }
 
-/* Hide placeholder when Behold feed is present */
-#behold-feed:not(:empty) ~ .instagram-placeholder {
-    display: none;
+/* Ensure Behold posts are clickable */
+.instagram-embed-wrapper [data-behold-id] a {
+    cursor: pointer;
+    pointer-events: auto;
 }
 
-/* Behold feed will automatically style itself, but we can add some container styles */
-#behold-feed figure {
+.instagram-embed-wrapper [data-behold-id] figure {
     margin: 0;
     width: 100%;
+}
+
+/* Hide placeholder when Behold feed is present */
+.instagram-embed-wrapper [data-behold-id]:not(:empty) ~ .instagram-placeholder {
+    display: none;
 }
 
 /* Instagram placeholder styles */
