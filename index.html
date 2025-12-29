@@ -7,15 +7,17 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo"><img src="GlobalAssets/wispyletters_logo.svg" alt="Wispy Letters"></div>
-            <ul class="nav-links">
-                <li><a href="#services">Services</a></li>
+            <ul class="nav-links nav-links-left">
+                <li><a href="instudio.html">In-studio</a></li>
                 <li><a href="#portfolio">Portfolio</a></li>
+            </ul>
+            <div class="logo"><img src="GlobalAssets/wispyletters_logo.svg" alt="Wispy Letters"></div>
+            <ul class="nav-links nav-links-right">
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -41,17 +43,49 @@
         </div>
     </section>
 
-    <section class="gallery">
-        <div class="container">
-            <div class="gallery-content">
-                <div class="gallery-text">
-                    <p>Wispy Letters is a calligraphy and design studio serving New York City and Long Island. We specialize in modern and elegant scripts through custom commissions, on-site events, and workshops.</p>
-                </div>
-                <div class="hero-photos">
-                    <img src="Photos/socialposts/asteroidcity.jpg" alt="Calligraphy Work" class="hero-photo">
-                    <img src="Photos/invitations/Taylor&Porter_L&DWedding_075.jpg" alt="Wedding Invitation" class="hero-photo">
-                </div>
-            </div>
+    <!--
+    <section class="intro-gallery">
+        <div class="gallery-row scroll-left">
+            <div class="gallery-item">Image 1</div>
+            <div class="gallery-item">Image 2</div>
+            <div class="gallery-item">Image 3</div>
+            <div class="gallery-item">Image 4</div>
+            <div class="gallery-item">Image 5</div>
+            <div class="gallery-item">Image 6</div>
+            
+            <div class="gallery-item">Image 1</div>
+            <div class="gallery-item">Image 2</div>
+            <div class="gallery-item">Image 3</div>
+            <div class="gallery-item">Image 4</div>
+            <div class="gallery-item">Image 5</div>
+            <div class="gallery-item">Image 6</div>
+        </div>
+        <div class="gallery-row scroll-right">
+            <div class="gallery-item">Image 7</div>
+            <div class="gallery-item">Image 8</div>
+            <div class="gallery-item">Image 9</div>
+            <div class="gallery-item">Image 10</div>
+            <div class="gallery-item">Image 11</div>
+            <div class="gallery-item">Image 12</div>
+            
+            <div class="gallery-item">Image 7</div>
+            <div class="gallery-item">Image 8</div>
+            <div class="gallery-item">Image 9</div>
+            <div class="gallery-item">Image 10</div>
+            <div class="gallery-item">Image 11</div>
+            <div class="gallery-item">Image 12</div>
+        </div>
+    </section>
+    -->
+
+    
+    <section class="intro">
+        <div class="intro-images">
+            <img src="Photos/socialposts/asteroidcity.jpg" alt="Calligraphy Work" class="intro-image intro-image-1">
+            <img src="Photos/instudio/Taylor&Porter_L&DWedding_075.jpg" alt="Wedding Invitation" class="intro-image intro-image-2">
+        </div>
+        <div class="intro-content">
+            <h2>Wispy Letters is a calligraphy and design studio serving New York City and Long Island. We specialize in modern and elegant scripts through custom commissions, on-site events, and workshops.</h2>
         </div>
     </section>
 
@@ -69,12 +103,12 @@
                     </div>
                 </div>
                 <div class="service-card">
+                    <div class="service-image">
+                        <img src="Photos/onsite/gucci-onsite.jpg" alt="Activation event at Gucci">
+                    </div>                    
                     <div class="service-content">
                         <img src="SectionTitles/onsite_title.svg" alt="On-site services">
                         <p>Delight and gift guests (or yourself!) a keepsake at your next event with live calligraphy. Create a memorable experience as they watch the entire process in person. See below for on-site services I offer. If you have a different idea or concept, we can also work together to make it a reality!</p>
-                    </div>
-                    <div class="service-image">
-                        <img src="Photos/onsite/gucci-onsite.jpg" alt="Activation event at Gucci">
                     </div>
                 </div>
                 <div class="service-card">
@@ -126,7 +160,7 @@
         <div class="container">
             <div class="about-content">
                 <div class="about-text">
-                    <h2>About</h2>
+                    <h2>The face behind the pen</h2>
                     <p>With over a decade of experience in the art of calligraphy, I specialize in creating beautiful, handcrafted lettering for life's most meaningful moments.</p>
                     <p>Each piece is carefully crafted with attention to detail, using traditional techniques and premium materials to ensure your project is truly unforgettable.</p>
                     <p>Whether you're planning a wedding, hosting a special event, or looking for a unique gift, I work closely with you to bring your vision to life.</p>
@@ -232,35 +266,163 @@
             observer.observe(servicesTitle);
         }
 
-        // Animate gallery photos on scroll
-        const galleryPhotos = document.querySelectorAll('.gallery .hero-photo');
-        const photoObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+        // Animate service card images on scroll
+        const serviceCardImages = document.querySelectorAll('.service-image img');
+        const serviceImageObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
+                    // Add staggered delay for each image
+                    setTimeout(() => {
+                        entry.target.classList.add('animate');
+                    }, index * 150); // 150ms delay between each image
+                    serviceImageObserver.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
 
-        galleryPhotos.forEach(photo => {
-            photoObserver.observe(photo);
+        serviceCardImages.forEach(img => {
+            serviceImageObserver.observe(img);
         });
 
-        // Expand video on scroll
-        const videoContainer = document.querySelector('.video-container');
-        const videoObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('expanded');
-                    // Stop observing once expanded
-                    videoObserver.unobserve(entry.target);
+        // Intro Section - Image Float and Text Fade
+        const introSection = document.querySelector('.intro');
+        if (introSection) {
+            const introImages = document.querySelectorAll('.intro-image');
+            const introContent = document.querySelector('.intro-content');
+            const introH2 = introContent.querySelector('h2');
+            let wordAnimationTriggered = false;
+
+            window.addEventListener('scroll', function() {
+                const sectionRect = introSection.getBoundingClientRect();
+                const sectionHeight = introSection.offsetHeight;
+                const viewportHeight = window.innerHeight;
+
+                // Start showing when section is 30% into view (hero 70% out of view)
+                const sectionStarted = sectionRect.top <= viewportHeight * 0.3;
+                const sectionEnded = sectionRect.bottom <= viewportHeight;
+
+                if (!sectionStarted || sectionEnded) {
+                    // Hide images and text when section hasn't started or has ended
+                    introImages.forEach(image => {
+                        image.style.opacity = 0;
+                    });
+                    introContent.style.opacity = 0;
+                    return;
+                }
+
+                // Calculate scroll progress through the section (0 to 1)
+                // Adjust calculation to account for earlier start point
+                const adjustedTop = sectionRect.top - (viewportHeight * 0.7);
+                const scrollProgress = Math.max(0, Math.min(1, -adjustedTop / (sectionHeight - viewportHeight * 0.7)));
+
+                // Trigger word animation when section first becomes visible and spans are ready
+                if (!wordAnimationTriggered && scrollProgress > 0) {
+                    const words = introH2.querySelectorAll('span');
+                    if (words.length > 0) {
+                        wordAnimationTriggered = true;
+                        words.forEach(word => {
+                            const delay = word.getAttribute('data-animation-delay');
+                            word.style.animation = `slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
+                            word.style.animationDelay = delay;
+                        });
+                    }
+                }
+
+                // Phase 1: Images move vertically (first 60% of scroll)
+                if (scrollProgress <= 0.6) {
+                    const imageProgress = scrollProgress / 0.6;
+
+                    introImages.forEach((image, index) => {
+                        // Vertical movement only
+                        let translateY = 0;
+
+                        if (index === 0) {
+                            // First image moves down
+                            translateY = imageProgress * 300;
+                        } else {
+                            // Second image moves up
+                            translateY = -imageProgress * 300;
+                        }
+
+                        image.style.transform = `translateY(${translateY}px)`;
+                        image.style.opacity = 1;
+                    });
+
+                    // Keep content visible and centered
+                    introContent.style.opacity = 1;
+                    introContent.style.transform = 'translate(-50%, -50%)';
+                    introContent.style.filter = 'blur(0px)';
+                }
+                // Phase 2: Fade and blur text (last 40% of scroll)
+                else {
+                    const fadeProgress = (scrollProgress - 0.6) / 0.4;
+
+                    // Continue moving images vertically
+                    introImages.forEach((image, index) => {
+                        let translateY = 0;
+
+                        if (index === 0) {
+                            translateY = 300 + (fadeProgress * 200);
+                        } else {
+                            translateY = -300 - (fadeProgress * 200);
+                        }
+
+                        image.style.transform = `translateY(${translateY}px)`;
+                        image.style.opacity = 1 - fadeProgress;
+                    });
+
+                    // Fade and blur text
+                    const translateY = -50 + (-fadeProgress * 50);
+                    const blurAmount = fadeProgress * 10;
+                    const opacity = 1 - fadeProgress;
+
+                    introContent.style.transform = `translate(-50%, ${translateY}%)`;
+                    introContent.style.filter = `blur(${blurAmount}px)`;
+                    introContent.style.opacity = opacity;
                 }
             });
-        }, { threshold: 0.1 });
-
-        if (videoContainer) {
-            videoObserver.observe(videoContainer);
         }
+
+        // Expand video on scroll from center, then fade up with blur
+        const videoContainer = document.querySelector('.video-container');
+        const video = videoContainer.querySelector('video');
+
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const heroHeight = window.innerHeight;
+
+            // Phase 1: Expand from center (scroll 50% to 100% of viewport)
+            if (scrollTop > heroHeight * 0.5 && scrollTop <= heroHeight) {
+                videoContainer.classList.add('expanded');
+                video.style.transform = 'translateY(0)';
+                video.style.filter = 'blur(0px)';
+                video.style.opacity = '1';
+            }
+            // Phase 2: Fade up with blur (scroll 100% to 200% of viewport)
+            else if (scrollTop > heroHeight && scrollTop <= heroHeight * 2) {
+                const fadeProgress = (scrollTop - heroHeight) / heroHeight;
+                const translateY = -fadeProgress * 100; // Move up by 100vh
+                const blurAmount = fadeProgress * 8; // Blur up to 8px (softer)
+                const opacity = 1 - fadeProgress; // Fade to 0
+
+                video.style.transform = `translateY(${translateY}vh)`;
+                video.style.filter = `blur(${blurAmount}px)`;
+                video.style.opacity = opacity;
+            }
+            // Before expansion
+            else if (scrollTop <= heroHeight * 0.5) {
+                videoContainer.classList.remove('expanded');
+                video.style.transform = 'translateY(0)';
+                video.style.filter = 'blur(0px)';
+                video.style.opacity = '0';
+            }
+            // After fade out
+            else if (scrollTop > heroHeight * 2) {
+                video.style.transform = 'translateY(-100vh)';
+                video.style.filter = 'blur(8px)';
+                video.style.opacity = '0';
+            }
+        });
 
         // Parallax effect for service images
         const serviceImages = document.querySelectorAll('.service-image');
@@ -297,6 +459,61 @@
                 heroSection.style.opacity = 0;
                 heroSection.style.display = 'none';
             }
+        });
+
+
+        // H2 Word-by-Word Animation on Scroll
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const h2Elements = document.querySelectorAll('h2');
+                const introH2 = document.querySelector('.intro-content h2');
+
+                h2Elements.forEach(h2 => {
+                    // Skip h2 elements with images
+                    if (h2.querySelector('img')) return;
+
+                    const text = h2.textContent.trim();
+                    const words = text.split(' ');
+
+                    // Clear the h2
+                    h2.innerHTML = '';
+                    h2.style.overflow = 'visible'; // Changed from 'hidden' to allow words to be visible
+
+                    // Add each word wrapped in a span
+                    words.forEach((word, index) => {
+                        const wordSpan = document.createElement('span');
+                        wordSpan.textContent = word;
+                        wordSpan.style.display = 'inline-block';
+                        wordSpan.style.marginRight = '0.25em';
+                        wordSpan.style.opacity = '0';
+                        wordSpan.style.transform = 'translateY(100%)';
+                        wordSpan.setAttribute('data-animation-delay', `${index * 0.03}s`);
+                        h2.appendChild(wordSpan);
+                    });
+                });
+
+                // Observe h2 elements and trigger animation when in view
+                const h2Observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const words = entry.target.querySelectorAll('span');
+                            words.forEach(word => {
+                                const delay = word.getAttribute('data-animation-delay');
+                                word.style.animation = `slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
+                                word.style.animationDelay = delay;
+                            });
+                            h2Observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' });
+
+                h2Elements.forEach(h2 => {
+                    // Skip h2 elements with images and the intro h2 (handled separately by scroll handler)
+                    if (!h2.querySelector('img') && h2 !== introH2) {
+                        h2Observer.observe(h2);
+                    }
+                });
+            }, 100);
         });
     </script>
 </body>
