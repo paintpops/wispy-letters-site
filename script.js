@@ -47,7 +47,7 @@ const serviceImageObserver = new IntersectionObserver((entries) => {
             serviceImageObserver.unobserve(entry.target);
         }
     });
-}, { threshold: 0.1, rootMargin: '0px 0px 800px 0px' });
+}, { threshold: 0.2, rootMargin: '0px 0px -100px 0px' });
 
 serviceCardImages.forEach(img => {
     serviceImageObserver.observe(img);
@@ -355,6 +355,102 @@ window.addEventListener('load', function() {
     s.src = "https://w.behold.so/widget.js";
     d.head.append(s);
 })();
+
+// Contact Section Slide Up (index.html only)
+const contactSection = document.querySelector('#contact.contact');
+const instagramSection = document.querySelector('.instagram-feed');
+
+if (contactSection) {
+    let extraScrollAmount = 0;
+    const maxExtraScroll = 500; // Max pixels of "extra" scroll to fully reveal contact
+
+    function updateContactPosition() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const documentHeight = document.documentElement.scrollHeight;
+        const viewportHeight = window.innerHeight;
+
+        // Calculate distance from bottom of page
+        const scrollBottom = scrollTop + viewportHeight;
+        const distanceFromBottom = documentHeight - scrollBottom;
+
+        // Check if we're at the bottom (within 5px tolerance)
+        const atBottom = distanceFromBottom < 5;
+
+        if (!atBottom) {
+            // Not at bottom, reset extra scroll
+            extraScrollAmount = 0;
+        }
+
+        // Calculate slide progress based on extra scroll attempts
+        const slideProgress = Math.max(0, Math.min(1, extraScrollAmount / maxExtraScroll));
+
+        // Apply transform based on scroll progress
+        // 100% hidden to 0% visible
+        const translateY = 100 - (slideProgress * 100);
+        contactSection.style.transform = `translateY(${translateY}%)`;
+
+        console.log('Contact slide:', {
+            scrollTop,
+            documentHeight,
+            viewportHeight,
+            distanceFromBottom,
+            atBottom,
+            extraScrollAmount,
+            slideProgress,
+            translateY
+        });
+    }
+
+    // Track wheel events to detect scroll attempts at bottom
+    window.addEventListener('wheel', function(e) {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const documentHeight = document.documentElement.scrollHeight;
+        const viewportHeight = window.innerHeight;
+        const scrollBottom = scrollTop + viewportHeight;
+        const distanceFromBottom = documentHeight - scrollBottom;
+        const atBottom = distanceFromBottom < 5;
+
+        if (atBottom && e.deltaY > 0) {
+            // At bottom and trying to scroll down
+            extraScrollAmount += e.deltaY;
+            extraScrollAmount = Math.min(extraScrollAmount, maxExtraScroll);
+            updateContactPosition();
+            e.preventDefault();
+        } else if (e.deltaY < 0 && extraScrollAmount > 0) {
+            // Scrolling up while contact is visible
+            extraScrollAmount += e.deltaY;
+            extraScrollAmount = Math.max(extraScrollAmount, 0);
+            updateContactPosition();
+            if (extraScrollAmount > 0) {
+                e.preventDefault();
+            }
+        }
+    }, { passive: false });
+
+    // Update on scroll
+    window.addEventListener('scroll', updateContactPosition);
+
+    // Initial update
+    updateContactPosition();
+
+    // Handle contact anchor link click
+    const contactLinks = document.querySelectorAll('a[href="#contact"]');
+    contactLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Scroll to bottom of page
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+            });
+            // Then trigger the slide up with extra scroll
+            setTimeout(() => {
+                extraScrollAmount = maxExtraScroll;
+                updateContactPosition();
+            }, 800); // Wait for scroll to finish
+        });
+    });
+}
 
 // Service Details Fixed Scroll Effect (instudio.html)
 const servicesDataContainer = document.querySelector('.services-data');
