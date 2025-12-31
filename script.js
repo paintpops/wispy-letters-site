@@ -212,9 +212,10 @@ if (introSection) {
 
 // Expand video on scroll from center, then fade up with blur
 const videoContainer = document.querySelector('.video-container');
-const video = videoContainer.querySelector('video');
+if (videoContainer) {
+    const video = videoContainer.querySelector('video');
 
-window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function() {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const heroHeight = window.innerHeight;
 
@@ -249,7 +250,8 @@ window.addEventListener('scroll', function() {
         video.style.filter = 'blur(8px)';
         video.style.opacity = '0';
     }
-});
+    });
+}
 
 // Parallax effect for service images
 const serviceImages = document.querySelectorAll('.service-image');
@@ -270,8 +272,9 @@ window.addEventListener('scroll', function() {
 const heroSection = document.querySelector('.hero');
 const videoSection = document.querySelector('.video-section');
 
-window.addEventListener('scroll', function() {
-    const videoRect = videoSection.getBoundingClientRect();
+if (heroSection && videoSection) {
+    window.addEventListener('scroll', function() {
+        const videoRect = videoSection.getBoundingClientRect();
 
     // Only start fading when video top reaches the top of viewport
     // Complete fade when video completely covers the viewport
@@ -286,7 +289,8 @@ window.addEventListener('scroll', function() {
         heroSection.style.opacity = 0;
         heroSection.style.display = 'none';
     }
-});
+    });
+}
 
 
 // H2 Word-by-Word Animation on Scroll
@@ -353,9 +357,23 @@ window.addEventListener('load', function() {
 })();
 
 // Service Details Fixed Scroll Effect (instudio.html)
-const servicesDataEl = document.getElementById('services-data');
-if (servicesDataEl) {
-    const servicesData = JSON.parse(servicesDataEl.textContent);
+const servicesDataContainer = document.querySelector('.services-data');
+console.log('Service Details Script Initializing...', {
+    servicesDataContainer: !!servicesDataContainer,
+    wrapper: !!document.querySelector('.service-details-wrapper'),
+    display: !!document.querySelector('.service-details-display')
+});
+
+if (servicesDataContainer) {
+    // Read service data from HTML elements
+    const serviceItems = servicesDataContainer.querySelectorAll('.service-item');
+    const servicesData = Array.from(serviceItems).map(item => ({
+        title: item.querySelector('h2').textContent,
+        description: item.querySelector('p').textContent,
+        image: item.getAttribute('data-image')
+    }));
+
+    console.log('Services Data Loaded:', servicesData);
     const wrapper = document.querySelector('.service-details-wrapper');
     const display = document.querySelector('.service-details-display');
     const h2 = display.querySelector('h2');
@@ -370,6 +388,9 @@ if (servicesDataEl) {
     img.style.position = 'absolute';
     img.style.top = '0';
     img.style.left = '0';
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
     img.style.zIndex = '1';
 
     function swipeToImage(newSrc, direction = 'left') {
@@ -450,6 +471,14 @@ if (servicesDataEl) {
         const isFullyVisible = wrapperRect.top <= 0 && wrapperRect.bottom > viewportHeight;
         const shouldUnstick = wrapperRect.bottom <= viewportHeight;
 
+        console.log('Service Details Scroll:', {
+            wrapperTop: wrapperRect.top,
+            wrapperBottom: wrapperRect.bottom,
+            isFullyVisible,
+            shouldUnstick,
+            isSticky: display.classList.contains('sticky')
+        });
+
         if (isFullyVisible && !shouldUnstick) {
             // Make it sticky when fully in viewport
             display.classList.add('sticky');
@@ -477,8 +506,16 @@ if (servicesDataEl) {
                 servicesData.length - 1
             );
 
+            console.log('Service Index:', {
+                scrollProgress,
+                serviceIndex,
+                currentServiceIndex,
+                totalServices: servicesData.length
+            });
+
             // Swap content/image when service changes
             if (serviceIndex !== currentServiceIndex) {
+                console.log('Changing service from', currentServiceIndex, 'to', serviceIndex);
                 const direction = serviceIndex > currentServiceIndex ? 'left' : 'right';
                 swipeToImage(servicesData[serviceIndex].image, direction);
                 updateContent(serviceIndex);

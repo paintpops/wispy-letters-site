@@ -568,10 +568,8 @@ nav {
     gap: 5rem;
     max-width: 1400px;
     margin: 0 auto;
-}
-
-.service-details:nth-child(even) {
-    flex-direction: row-reverse;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .service-details-wrapper {
@@ -596,6 +594,8 @@ nav {
 .service-details-display.sticky {
     position: fixed;
     top: 50vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .service-details-content {
