@@ -61,13 +61,49 @@ if (introGallery) {
     const galleryRows = introGallery.querySelectorAll('.gallery-row');
     const viewportHeight = window.innerHeight;
 
-    // Store original dimensions (before sticky is applied)
-    const originalHeight = introGallery.offsetHeight;
     let originalTop = 0;
     let isInitialized = false;
+    let maxHorizontalScroll = 0;
+    let currentScrollX = 0;
+    let targetScrollX = 0;
+
+    // Calculate and set container height based on horizontal scroll needs
+    function updateGalleryHeight() {
+        const rowWidth = galleryRows[0] ? galleryRows[0].scrollWidth : 0;
+        maxHorizontalScroll = Math.max(0, rowWidth - window.innerWidth);
+        // Set container height to accommodate horizontal scroll + viewport height
+        introGallery.style.height = `${maxHorizontalScroll + viewportHeight}px`;
+    }
+
+    // Smooth lerp function
+    function lerp(start, end, factor) {
+        return start + (end - start) * factor;
+    }
+
+    // Animation loop for smooth scrolling
+    function animateGallery() {
+        // Smooth interpolation with easing
+        currentScrollX = lerp(currentScrollX, targetScrollX, 0.1);
+
+        galleryRows.forEach(row => {
+            row.style.transform = `translateX(${-currentScrollX}px)`;
+        });
+
+        requestAnimationFrame(animateGallery);
+    }
+
+    // Start animation loop
+    animateGallery();
+
+    // Initial height calculation
+    updateGalleryHeight();
+
+    // Recalculate on window resize
+    window.addEventListener('resize', updateGalleryHeight);
 
     window.addEventListener('scroll', function() {
         const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        const galleryRect = introGallery.getBoundingClientRect();
 
         // Initialize originalTop on first scroll (when element is in normal flow)
         if (!isInitialized && !introGalleryFixed.classList.contains('sticky')) {
@@ -77,8 +113,8 @@ if (introGallery) {
 
         // Calculate position relative to original position
         const scrollPastStart = currentScroll - originalTop;
-        const scrollPastEnd = scrollPastStart - (originalHeight - viewportHeight);
-        
+        const scrollPastEnd = scrollPastStart - maxHorizontalScroll;
+
         // Should be sticky when we've scrolled to it but not past it
         const shouldBeSticky = scrollPastStart >= 0 && scrollPastEnd < 0;
 
@@ -86,24 +122,16 @@ if (introGallery) {
             // Make sticky and scroll horizontally
             introGalleryFixed.classList.add('sticky');
             introGalleryFixed.classList.remove('past');
-            const scrollProgress = Math.max(0, scrollPastStart);
-            galleryRows.forEach(row => {
-                row.style.transform = `translateX(${-scrollProgress}px)`;
-            });
+            targetScrollX = Math.max(0, scrollPastStart);
         } else if (scrollPastStart < 0) {
             // Before becoming sticky
             introGalleryFixed.classList.remove('sticky');
-            galleryRows.forEach(row => {
-                row.style.transform = 'translateX(0)';
-            });
+            targetScrollX = 0;
         } else {
             // After scrolling past - keep at final position
             introGalleryFixed.classList.remove('sticky');
             introGalleryFixed.classList.add('past');
-            const maxScroll = originalHeight - viewportHeight;
-            galleryRows.forEach(row => {
-                row.style.transform = `translateX(${-maxScroll}px)`;
-            });
+            targetScrollX = maxHorizontalScroll;
         }
     });
 }
@@ -121,8 +149,11 @@ if (introSection) {
         const sectionHeight = introSection.offsetHeight;
         const viewportHeight = window.innerHeight;
 
-        // Start showing when section is 50% into view (hero 50% out of view)
-        const sectionStarted = sectionRect.top <= viewportHeight * 0.5;
+        // Check if intro-gallery is 60% out of view
+        const gallery = document.querySelector('.intro-gallery');
+        const galleryRect = gallery ? gallery.getBoundingClientRect() : null;
+        const galleryExitProgress = galleryRect ? 1 - (galleryRect.bottom / viewportHeight) : 0;
+        const sectionStarted = galleryExitProgress >= 0.6;
         const sectionEnded = sectionRect.bottom <= viewportHeight;
 
         if (!sectionStarted || sectionEnded) {
@@ -134,10 +165,9 @@ if (introSection) {
             return;
         }
 
-        // Calculate scroll progress through the section (0 to 1)
-        // Adjust calculation to account for earlier start point
-        const adjustedTop = sectionRect.top - (viewportHeight * 0.5);
-        const scrollProgress = Math.max(0, Math.min(1, -adjustedTop / (sectionHeight - viewportHeight * 0.5)));
+        // Calculate scroll progress based on intro section position
+        // Progress goes from 0 (when started) to 1 (when section ends)
+        const scrollProgress = Math.max(0, Math.min(1, -sectionRect.top / (sectionHeight - viewportHeight)));
 
         // Trigger word animation when section first becomes visible and spans are ready
         if (!wordAnimationTriggered && scrollProgress > 0) {
@@ -152,9 +182,9 @@ if (introSection) {
             }
         }
 
-        // Phase 1: Images move vertically (first 60% of scroll)
-        if (scrollProgress <= 0.6) {
-            const imageProgress = scrollProgress / 0.6;
+        // Phase 1: Images move vertically (first 50% of scroll)
+        if (scrollProgress <= 0.5) {
+            const imageProgress = scrollProgress / 0.5;
 
             introImages.forEach((image, index) => {
                 // Vertical movement only
@@ -178,9 +208,9 @@ if (introSection) {
             introContent.style.transform = 'translate(-50%, -50%)';
             introContent.style.filter = 'blur(0px)';
         }
-        // Phase 2: Fade and blur text (last 40% of scroll)
+        // Phase 2: Fade and blur text (last 50% of scroll)
         else {
-            const fadeProgress = (scrollProgress - 0.6) / 0.4;
+            const fadeProgress = (scrollProgress - 0.5) / 0.5;
 
             // Continue moving images vertically
             introImages.forEach((image, index) => {
@@ -362,7 +392,12 @@ const instagramSection = document.querySelector('.instagram-feed');
 
 if (contactSection) {
     let extraScrollAmount = 0;
-    const maxExtraScroll = 500; // Max pixels of "extra" scroll to fully reveal contact
+    const maxExtraScroll = 1000; // Max pixels of "extra" scroll to fully reveal contact
+
+    // Easing function for smooth slide-up (starts fast, slows down)
+    function easeOutCubic(x) {
+        return 1 - Math.pow(1 - x, 3);
+    }
 
     function updateContactPosition() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -382,7 +417,10 @@ if (contactSection) {
         }
 
         // Calculate slide progress based on extra scroll attempts
-        const slideProgress = Math.max(0, Math.min(1, extraScrollAmount / maxExtraScroll));
+        const linearProgress = Math.max(0, Math.min(1, extraScrollAmount / maxExtraScroll));
+
+        // Apply easing for smooth slide-up
+        const slideProgress = easeOutCubic(linearProgress);
 
         // Apply transform based on scroll progress
         // 100% hidden to 0% visible
