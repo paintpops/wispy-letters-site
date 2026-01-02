@@ -490,13 +490,74 @@ if (contactSection) {
     });
 }
 
-// Service Details Fixed Scroll Effect (instudio.html)
+// Service Section Parallax Effect (instudio.html)
+const serviceSections = document.querySelectorAll('.service-section');
+
+if (serviceSections.length > 0) {
+    // Track current and target positions for each image
+    const imageStates = [];
+
+    serviceSections.forEach((section, index) => {
+        const imageWrapper = section.querySelector('.service-image-wrapper');
+        const img = imageWrapper ? imageWrapper.querySelector('img') : null;
+
+        if (!img) return;
+
+        imageStates[index] = {
+            current: 100,
+            target: 100
+        };
+    });
+
+    // Smooth lerp function
+    function lerp(start, end, factor) {
+        return start + (end - start) * factor;
+    }
+
+    // Animation loop for smooth scrolling
+    function animateServiceImages() {
+        imageStates.forEach((state, index) => {
+            if (!serviceSections[index]) return;
+
+            const img = serviceSections[index].querySelector('.service-image-wrapper img');
+            if (!img) return;
+
+            // Smooth interpolation with easing
+            state.current = lerp(state.current, state.target, 0.05);
+
+            img.style.transform = `translateY(${state.current}vh)`;
+        });
+
+        requestAnimationFrame(animateServiceImages);
+    }
+
+    // Start animation loop
+    animateServiceImages();
+
+    // Update target positions on scroll
+    serviceSections.forEach((section, index) => {
+        window.addEventListener('scroll', function() {
+            const sectionRect = section.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            const sectionHeight = section.offsetHeight;
+
+            // Calculate scroll progress through the section (0 to 1)
+            const scrollProgress = Math.max(0, Math.min(1,
+                (viewportHeight - sectionRect.top) / (sectionHeight + viewportHeight)
+            ));
+
+            // Image starts at 60vh (below screen) and moves to -60vh (above screen)
+            const startPosition = 60;
+            const endPosition = -60;
+            const targetPosition = startPosition - (scrollProgress * (startPosition - endPosition));
+
+            imageStates[index].target = targetPosition;
+        });
+    });
+}
+
+// Old Service Details Code (can be removed if not needed)
 const servicesDataContainer = document.querySelector('.services-data');
-console.log('Service Details Script Initializing...', {
-    servicesDataContainer: !!servicesDataContainer,
-    wrapper: !!document.querySelector('.service-details-wrapper'),
-    display: !!document.querySelector('.service-details-display')
-});
 
 if (servicesDataContainer) {
     // Read service data from HTML elements
@@ -600,6 +661,13 @@ if (servicesDataContainer) {
         const wrapperRect = wrapper.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         const wrapperHeight = wrapper.offsetHeight;
+
+        // Calculate overall scroll progress through the wrapper
+        const overallProgress = Math.max(0, Math.min(1, -wrapperRect.top / (wrapperHeight - viewportHeight)));
+
+        // Apply parallax effect to image (scrolls upward faster than page)
+        const parallaxAmount = overallProgress * 200; // Image moves up 200px over the scroll
+        imageContainer.style.transform = `translateY(-${parallaxAmount}px)`;
 
         // Determine if display should be sticky
         const isFullyVisible = wrapperRect.top <= 0 && wrapperRect.bottom > viewportHeight;
@@ -770,3 +838,22 @@ if (parallaxSection) {
         }
     });
 }
+
+// FAQ Accordion
+const faqItems = document.querySelectorAll('.faq-item');
+
+faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+
+    question.addEventListener('click', () => {
+        // Close all other items
+        faqItems.forEach(otherItem => {
+            if (otherItem !== item && otherItem.classList.contains('active')) {
+                otherItem.classList.remove('active');
+            }
+        });
+
+        // Toggle current item
+        item.classList.toggle('active');
+    });
+});
