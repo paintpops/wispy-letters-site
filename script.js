@@ -494,18 +494,20 @@ if (contactSection) {
 const serviceSections = document.querySelectorAll('.service-section');
 
 if (serviceSections.length > 0) {
-    // Track current and target positions for each image
-    const imageStates = [];
+    // Track current and target positions for both container and image
+    const parallaxStates = [];
 
     serviceSections.forEach((section, index) => {
         const imageWrapper = section.querySelector('.service-image-wrapper');
         const img = imageWrapper ? imageWrapper.querySelector('img') : null;
 
-        if (!img) return;
+        if (!img || !imageWrapper) return;
 
-        imageStates[index] = {
-            current: 100,
-            target: 100
+        parallaxStates[index] = {
+            containerCurrent: 0,
+            containerTarget: 0,
+            imageCurrent: -10,
+            imageTarget: -10
         };
     });
 
@@ -515,24 +517,28 @@ if (serviceSections.length > 0) {
     }
 
     // Animation loop for smooth scrolling
-    function animateServiceImages() {
-        imageStates.forEach((state, index) => {
+    function animateServiceParallax() {
+        parallaxStates.forEach((state, index) => {
             if (!serviceSections[index]) return;
 
-            const img = serviceSections[index].querySelector('.service-image-wrapper img');
-            if (!img) return;
+            const imageWrapper = serviceSections[index].querySelector('.service-image-wrapper');
+            const img = imageWrapper ? imageWrapper.querySelector('img') : null;
+            if (!img || !imageWrapper) return;
 
             // Smooth interpolation with easing
-            state.current = lerp(state.current, state.target, 0.05);
+            state.containerCurrent = lerp(state.containerCurrent, state.containerTarget, 0.05);
+            state.imageCurrent = lerp(state.imageCurrent, state.imageTarget, 0.05);
 
-            img.style.transform = `translateY(${state.current}vh)`;
+            // Apply transforms
+            imageWrapper.style.transform = `translateY(${state.containerCurrent}vh)`;
+            img.style.transform = `translateY(${state.imageCurrent}vh)`;
         });
 
-        requestAnimationFrame(animateServiceImages);
+        requestAnimationFrame(animateServiceParallax);
     }
 
     // Start animation loop
-    animateServiceImages();
+    animateServiceParallax();
 
     // Update target positions on scroll
     serviceSections.forEach((section, index) => {
@@ -546,12 +552,18 @@ if (serviceSections.length > 0) {
                 (viewportHeight - sectionRect.top) / (sectionHeight + viewportHeight)
             ));
 
-            // Image starts at 60vh (below screen) and moves to -60vh (above screen)
-            const startPosition = 60;
-            const endPosition = -60;
-            const targetPosition = startPosition - (scrollProgress * (startPosition - endPosition));
+            // Container moves more noticeably (sliding effect)
+            const containerStart = 0;
+            const containerEnd = -50;
+            const containerPosition = containerStart - (scrollProgress * (containerStart - containerEnd));
 
-            imageStates[index].target = targetPosition;
+            // Image moves more subtly inside the container (starts with top hidden, ends with bottom hidden)
+            const imageStart = -10;
+            const imageEnd = 10;
+            const imagePosition = imageStart + (scrollProgress * (imageEnd - imageStart));
+
+            parallaxStates[index].containerTarget = containerPosition;
+            parallaxStates[index].imageTarget = imagePosition;
         });
     });
 }
