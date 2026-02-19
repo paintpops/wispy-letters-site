@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Wispy Letters</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header></header>
+    
+    <section class="innerpage">
+        <div class="innerpage-content">
+             <div class="innerpage-svg-container">
+                <img src="SectionTitles/blog_title.svg" alt="Blog" class="innerpage-svg">
+            </div>
+        </div>
+    </section>
+
+    <section class="blog-grid-section">
+        <div class="container">
+            <div class="blog-grid">
+                <!-- Blog Post 1 -->
+                <a href="blog-post-1.html" class="blog-card">
+                    <div class="blog-thumbnail">
+                        <img src="Photos/instudio/Taylor&Porter_L&DWedding_075.jpg" alt="Wedding Calligraphy Tips">
+                    </div>
+                    <div class="blog-card-content">
+                        <h3>5 Tips for Choosing Wedding Calligraphy</h3>
+                        <p class="blog-date">January 15, 2025</p>
+                        <p class="blog-excerpt">Discover essential tips for selecting the perfect calligraphy style for your wedding invitations and day-of details.</p>
+                    </div>
+                </a>
+
+                <!-- Blog Post 2 -->
+                <a href="blog-post-2.html" class="blog-card">
+                    <div class="blog-thumbnail">
+                        <img src="Photos/instudio/matera-suite02.jpg" alt="Custom Invitation Suite">
+                    </div>
+                    <div class="blog-card-content">
+                        <h3>Behind the Scenes: Creating a Custom Suite</h3>
+                        <p class="blog-date">January 8, 2025</p>
+                        <p class="blog-excerpt">Take a look at the process of designing and creating a fully custom calligraphy invitation suite from start to finish.</p>
+                    </div>
+                </a>
+
+                <!-- Blog Post 3 -->
+                <a href="blog-post-3.html" class="blog-card">
+                    <div class="blog-thumbnail">
+                        <img src="Photos/workshops/brooklyncraftcompany01.jpg" alt="Calligraphy Workshop">
+                    </div>
+                    <div class="blog-card-content">
+                        <h3>Hosting Your First Calligraphy Workshop</h3>
+                        <p class="blog-date">December 22, 2024</p>
+                        <p class="blog-excerpt">Learn what it takes to plan and execute a successful calligraphy workshop for beginners and enthusiasts alike.</p>
+                    </div>
+                </a>
+
+                <!-- Blog Post 4 -->
+                <a href="blog-post-4.html" class="blog-card">
+                    <div class="blog-thumbnail">
+                        <img src="Photos/instudio/placecards01.jpg" alt="Place Cards">
+                    </div>
+                    <div class="blog-card-content">
+                        <h3>The Art of Hand-Lettered Place Cards</h3>
+                        <p class="blog-date">December 10, 2024</p>
+                        <p class="blog-excerpt">Explore different styles and techniques for creating beautiful, personalized place cards for your special event.</p>
+                    </div>
+                </a>
+
+                <!-- Blog Post 5 -->
+                <a href="blog-post-5.html" class="blog-card">
+                    <div class="blog-thumbnail">
+                        <img src="Photos/onsite/gucci-onsite.jpg" alt="On-site Calligraphy">
+                    </div>
+                    <div class="blog-card-content">
+                        <h3>Corporate Event Calligraphy: What to Expect</h3>
+                        <p class="blog-date">November 28, 2024</p>
+                        <p class="blog-excerpt">Everything you need to know about booking on-site calligraphy services for your corporate event or brand activation.</p>
+                    </div>
+                </a>
+
+                <!-- Blog Post 6 -->
+                <a href="blog-post-6.html" class="blog-card">
+                    <div class="blog-thumbnail">
+                        <img src="Photos/instudio/branding02.jpg" alt="Calligraphy Branding">
+                    </div>
+                    <div class="blog-card-content">
+                        <h3>Modern Calligraphy for Brand Identity</h3>
+                        <p class="blog-date">November 15, 2024</p>
+                        <p class="blog-excerpt">How custom calligraphy can elevate your brand and create a memorable, elegant visual identity for your business.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <img src="SectionTitles/contact_title.svg" alt="Let's Create Something Beautiful">
+            <div class="contact-content-wrapper">
+                <p class="section-subtitle">Ready to start your project? Get in touch today</p>
+                <form class="contact-form">
+                <div class="form-row">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-row">
+                    <input type="tel" placeholder="Phone Number">
+                    <select required>
+                        <option value="">Select a Service</option>
+                        <option value="wedding">Wedding Invitations</option>
+                        <option value="event">Event Stationery</option>
+                        <option value="artwork">Custom Artwork</option>
+                        <option value="certificates">Certificates & Awards</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <textarea placeholder="Tell me about your project..." rows="5" required></textarea>
+                <button type="submit" class="submit-button">Send Message</button>
+                </form>
+            </div>
+        </div>
+        <footer>
+            <div class="container">
+                <p>&copy; 2025 Wispy Letters. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#">Instagram</a>
+                    <a href="#">Pinterest</a>
+                    <a href="#">Facebook</a>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <script src="nav.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Dynamically load blog posts from JSON
+        async function loadBlogPosts() {
+            try {
+                const response = await fetch('blog-posts/posts.json');
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const posts = await response.json();
+
+                // Sort posts by timestamp (newest first)
+                posts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                const blogGrid = document.querySelector('.blog-grid');
+
+                // Clear existing placeholder posts
+                blogGrid.innerHTML = '';
+
+                // Generate blog cards from JSON data
+                posts.forEach(post => {
+                    const blogCard = document.createElement('a');
+                    blogCard.href = post.url;
+                    blogCard.className = 'blog-card';
+
+                    blogCard.innerHTML = `
+                        <div class="blog-thumbnail">
+                            <img src="${post.image}" alt="${post.title}">
+                        </div>
+                        <div class="blog-card-content">
+                            <h3>${post.title}</h3>
+                            <p class="blog-date">${post.date}</p>
+                            <p class="blog-excerpt">${post.excerpt}</p>
+                        </div>
+                    `;
+
+                    blogGrid.appendChild(blogCard);
+                });
+            } catch (error) {
+                console.error('Error loading blog posts:', error);
+                console.log('Make sure you are running a local web server to view the blog posts.');
+                // If fetch fails, keep the placeholder posts visible
+            }
+        }
+
+        // Load posts when page loads
+        document.addEventListener('DOMContentLoaded', loadBlogPosts);
+    </script>
+</body>
+</html>

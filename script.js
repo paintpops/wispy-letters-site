@@ -149,8 +149,8 @@ if (introSection) {
         const sectionHeight = introSection.offsetHeight;
         const viewportHeight = window.innerHeight;
 
-        // Check if intro-gallery is 60% out of view
-        const gallery = document.querySelector('.intro-gallery');
+        // Check if auto-gallery is 60% out of view
+        const gallery = document.querySelector('.auto-gallery');
         const galleryRect = gallery ? gallery.getBoundingClientRect() : null;
         const galleryExitProgress = galleryRect ? 1 - (galleryRect.bottom / viewportHeight) : 0;
         const sectionStarted = galleryExitProgress >= 0.6;
@@ -869,3 +869,72 @@ faqItems.forEach(item => {
         item.classList.toggle('active');
     });
 });
+
+// Testimonials carousel
+const testimonialItems = document.querySelectorAll('.testimonial-item');
+const testimonialDots = document.querySelectorAll('.testimonial-dot');
+
+if (testimonialItems.length > 0 && testimonialDots.length > 0) {
+    let currentTestimonial = 0;
+    let testimonialInterval;
+
+    function showTestimonial(index) {
+        // Remove active class from all items and dots
+        testimonialItems.forEach(item => item.classList.remove('active'));
+        testimonialDots.forEach(dot => dot.classList.remove('active'));
+
+        // Add active class to current item and dot
+        testimonialItems[index].classList.add('active');
+        testimonialDots[index].classList.add('active');
+
+        currentTestimonial = index;
+    }
+
+    function nextTestimonial() {
+        const next = (currentTestimonial + 1) % testimonialItems.length;
+        showTestimonial(next);
+    }
+
+    function startAutoplay() {
+        testimonialInterval = setInterval(nextTestimonial, 8000);
+    }
+
+    function resetAutoplay() {
+        clearInterval(testimonialInterval);
+        startAutoplay();
+    }
+
+    // Add click handlers to dots
+    testimonialDots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            const index = parseInt(dot.dataset.index);
+            showTestimonial(index);
+            resetAutoplay();
+        });
+    });
+
+    // Start autoplay
+    startAutoplay();
+}
+
+// Parallax effect for staggered gallery
+const staggeredGalleryItems = document.querySelectorAll('.staggered-gallery-item');
+if (staggeredGalleryItems.length > 0) {
+    const staggeredGallerySection = document.querySelector('.staggered-gallery-section');
+
+    window.addEventListener('scroll', function() {
+        const scrollY = window.pageYOffset;
+        const sectionTop = staggeredGallerySection.offsetTop;
+        const sectionHeight = staggeredGallerySection.offsetHeight;
+        const viewportHeight = window.innerHeight;
+
+        // Only apply parallax when section is in viewport
+        if (scrollY + viewportHeight > sectionTop && scrollY < sectionTop + sectionHeight) {
+            staggeredGalleryItems.forEach(item => {
+                const speed = parseFloat(item.dataset.parallaxSpeed) || 0.3;
+                const offset = (scrollY - sectionTop) * speed;
+                item.style.transform = `translateY(${offset}px)`;
+            });
+        }
+    });
+}

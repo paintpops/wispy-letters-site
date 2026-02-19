@@ -12,17 +12,76 @@
 <body>
     <header></header>
 
-    <section class="innerpage">
+    <!--
+        <section class="innerpage">
         <div class="innerpage-content">
-             <div class="innerpage-content-container">
+             <div class="innerpage-svg-container">
                 <img src="SectionTitles/instudio_title.svg" alt="In-Studio Services" class="innerpage-svg">
+                <img src="Photos/onsite/gucci-onsite.jpg" alt="On-site Service" class="innerpage-small-image">
+                <p>Handcrafted pieces meticulously made to perfection using my full range of in-studio tools.</p>
             </div>
-            <div class="innerpage-content-container">
+        </div>
+        <div class="innerpage-image">
+            <video autoplay loop muted playsinline>
+                <source src="videos/calligraphy-video.mp4" type="video/mp4">
+            </video>
+        </div>
+    </section>
+    -->
+
+            <section class="hero-title-section">
+        <div class="hero-title-container">
+            <img src="SectionTitles/instudio_title.svg" alt="In-Studio Services" class="hero-title-bg">
+            <div class="hero-title-content">
+                <h1>The gift of lifelong learning</h1>
                 <p>Handcrafted pieces meticulously made to perfection using my full range of in-studio tools.</p>
             </div>
         </div>
     </section>
 
+    <section class="video-grow-section">
+        <div class="video-grow-container">
+            <div class="video-grow-wrapper">
+                <video autoplay loop muted playsinline>
+                    <source src="videos/calligraphy-video.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <section class="staggered-gallery-section">
+        <div class="staggered-gallery-container">
+            <h2>Ideas for personalized items</h2>
+            <div class="staggered-gallery-grid">
+                <div class="staggered-gallery-item" data-parallax-speed="0.3" style="left: 8%; top: 50px;">
+                    <img src="Photos/instudio/matera-suite02.jpg" alt="Wedding Invitations">
+                    <p class="gallery-caption">Wedding invitations</p>
+                </div>
+                <div class="staggered-gallery-item" data-parallax-speed="0.5" style="left: 62%; top: 0;">
+                    <img src="Photos/instudio/placecards01.jpg" alt="Place Cards">
+                    <p class="gallery-caption">Place cards</p>
+                </div>
+                <div class="staggered-gallery-item" data-parallax-speed="0.2" style="left: 35%; top: 380px;">
+                    <img src="Photos/instudio/branding01.png" alt="Custom Branding">
+                    <p class="gallery-caption">Custom branding</p>
+                </div>
+                <div class="staggered-gallery-item" data-parallax-speed="0.4" style="left: 5%; top: 780px;">
+                    <img src="Photos/instudio/Taylor&Porter_L&DWedding_075.jpg" alt="Event Signage">
+                    <p class="gallery-caption">Event signage</p>
+                </div>
+                <div class="staggered-gallery-item" data-parallax-speed="0.35" style="left: 68%; top: 650px;">
+                    <img src="Photos/onsite/cartier-onsite.jpg" alt="Gift Items">
+                    <p class="gallery-caption">Gift items</p>
+                </div>
+                <div class="staggered-gallery-item" data-parallax-speed="0.25" style="left: 40%; top: 1150px;">
+                    <img src="Photos/instudio/branding02.jpg" alt="Certificates">
+                    <p class="gallery-caption">Certificates</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--
     <section class="service-section">
         <div class="service-container">
             <div class="service-content">
@@ -71,6 +130,8 @@
             </div>
         </div>
     </section>
+
+-->
 
     <section class="service-section">
         <div class="service-container">
@@ -152,5 +213,42 @@
 
     <script src="nav.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Video grow on scroll effect - simple width grow
+        const videoGrowSection = document.querySelector('.video-grow-section');
+        if (videoGrowSection) {
+            const videoWrapper = document.querySelector('.video-grow-wrapper');
+
+            window.addEventListener('scroll', function() {
+                const scrollY = window.pageYOffset;
+                const sectionTop = videoGrowSection.offsetTop;
+                const sectionHeight = videoGrowSection.offsetHeight;
+                const viewportHeight = window.innerHeight;
+
+                // Start growing only after scrolling 500px into the section
+                const startTrigger = sectionTop - viewportHeight + 500;
+                const endTrigger = sectionTop + sectionHeight - viewportHeight;
+
+                if (scrollY < startTrigger) {
+                    // Before trigger - stay at 60vw
+                    videoWrapper.style.width = '60vw';
+                } else if (scrollY >= startTrigger && scrollY <= endTrigger) {
+                    // Calculate progress between start and end triggers
+                    const progress = (scrollY - startTrigger) / (endTrigger - startTrigger);
+                    const clampedProgress = Math.max(0, Math.min(1, progress));
+
+                    // Grow from 60vw to 100vw
+                    const startWidth = 60;
+                    const endWidth = 100;
+                    const currentWidth = startWidth + (endWidth - startWidth) * clampedProgress;
+
+                    videoWrapper.style.width = `${currentWidth}vw`;
+                } else {
+                    // After end trigger - stay at 100vw
+                    videoWrapper.style.width = '100vw';
+                }
+            });
+        }
+    </script>
 </body>
 </html>

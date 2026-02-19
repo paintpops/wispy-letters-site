@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Admin | Wispy Letters</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 20px 80px;
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .admin-header h1 {
+            font-size: 3rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-button {
+            padding: 15px 30px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+            font-family: 'Cormorant Garamond', serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1rem;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        .image-preview {
+            margin-top: 10px;
+            max-width: 300px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .image-preview img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .btn-primary {
+            padding: 14px 40px;
+            background: var(--primary-color);
+            color: var(--background-dark);
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-family: 'Cormorant Garamond', serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #c5a880;
+            transform: translateY(-2px);
+        }
+
+        .posts-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .post-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .post-info h3 {
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .post-info p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-edit, .btn-delete {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Cormorant Garamond', serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: var(--primary-color);
+            color: var(--background-dark);
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-edit:hover, .btn-delete:hover {
+            transform: translateY(-2px);
+        }
+
+        .success-message {
+            padding: 15px;
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            color: #28a745;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            padding: 15px;
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid #dc3545;
+            border-radius: 8px;
+            color: #dc3545;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        #editor {
+            min-height: 400px;
+        }
+
+        .ck-editor__editable {
+            min-height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <header></header>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Blog Admin</h1>
+            <p style="color: rgba(255, 255, 255, 0.7);">Manage your blog posts</p>
+        </div>
+
+        <div class="success-message" id="successMessage"></div>
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="admin-tabs">
+            <button class="tab-button active" data-tab="create">Create New Post</button>
+            <button class="tab-button" data-tab="manage">Manage Posts</button>
+        </div>
+
+        <!-- Create Post Tab -->
+        <div class="tab-content active" id="create-tab">
+            <form id="postForm">
+                <input type="hidden" id="postId" name="postId">
+
+                <div class="form-group">
+                    <label for="postTitle">Post Title *</label>
+                    <input type="text" id="postTitle" name="postTitle" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="postDate">Publication Date *</label>
+                    <input type="date" id="postDate" name="postDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="postCategory">Category *</label>
+                    <select id="postCategory" name="postCategory" required>
+                        <option value="">Select a category</option>
+                        <option value="Events">Events</option>
+                        <option value="Tutorials">Tutorials</option>
+                        <option value="Wedding">Wedding</option>
+                        <option value="Behind the Scenes">Behind the Scenes</option>
+                        <option value="Tips & Advice">Tips & Advice</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="postExcerpt">Excerpt (Brief summary for blog listing) *</label>
+                    <textarea id="postExcerpt" name="postExcerpt" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="postImage">Featured Image *</label>
+                    <input type="file" id="postImage" name="postImage" accept="image/*">
+                    <div class="image-preview" id="imagePreview">
+                        <img id="previewImg" src="" alt="Preview">
+                    </div>
+                    <input type="hidden" id="currentImage" name="currentImage">
+                </div>
+
+                <div class="form-group">
+                    <label for="editor">Post Content *</label>
+                    <div id="editor"></div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="submitButton">Publish Post</button>
+                <button type="button" class="btn-primary" id="cancelEdit" style="display: none; background: #6c757d; margin-left: 10px;">Cancel</button>
+            </form>
+        </div>
+
+        <!-- Manage Posts Tab -->
+        <div class="tab-content" id="manage-tab">
+            <div class="posts-list" id="postsList">
+                <!-- Posts will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="nav.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
+    <script>
+        let editor;
+        let posts = [];
+        let editingPostId = null;
+
+        // Initialize CKEditor
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'blockQuote', 'undo', 'redo'],
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
+                    ]
+                }
+            })
+            .then(newEditor => {
+                editor = newEditor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        // Tab switching
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+                button.classList.add('active');
+                document.getElementById(`${button.dataset.tab}-tab`).classList.add('active');
+
+                if (button.dataset.tab === 'manage') {
+                    loadPosts();
+                }
+            });
+        });
+
+        // Image preview and upload
+        document.getElementById('postImage').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+
+                // Upload image immediately
+                const formData = new FormData();
+                formData.append('image', file);
+
+                try {
+                    const response = await fetch('blog-admin-api.php?action=upload-image', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        document.getElementById('currentImage').value = result.path;
+                        showSuccess('Image uploaded successfully!');
+                    } else {
+                        showError(result.error || 'Failed to upload image');
+                    }
+                } catch (error) {
+                    console.error('Upload error:', error);
+                    // Fallback to manual path entry
+                    showError('Backend not available. Please manually copy image to Photos/blog/ folder.');
+                }
+            }
+        });
+
+        // Load posts from JSON
+        async function loadPosts() {
+            try {
+                const response = await fetch('blog-posts/posts.json');
+                posts = await response.json();
+                displayPosts();
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                posts = [];
+                displayPosts();
+            }
+        }
+
+        // Display posts in manage tab
+        function displayPosts() {
+            const postsList = document.getElementById('postsList');
+
+            if (posts.length === 0) {
+                postsList.innerHTML = '<p style="color: rgba(255, 255, 255, 0.6); text-align: center;">No posts yet. Create your first post!</p>';
+                return;
+            }
+
+            posts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            postsList.innerHTML = posts.map(post => `
+                <div class="post-item">
+                    <div class="post-info">
+                        <h3>${post.title}</h3>
+                        <p>${post.date} • ${post.category}</p>
+                    </div>
+                    <div class="post-actions">
+                        <button class="btn-edit" onclick="editPost('${post.id}')">Edit</button>
+                        <button class="btn-delete" onclick="deletePost('${post.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Create slug from title
+        function createSlug(title) {
+            return title.toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        }
+
+        // Form submission
+        document.getElementById('postForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('postTitle').value;
+            const date = document.getElementById('postDate').value;
+            const category = document.getElementById('postCategory').value;
+            const excerpt = document.getElementById('postExcerpt').value;
+            const content = editor.getData();
+            const imageFile = document.getElementById('postImage').files[0];
+            const currentImage = document.getElementById('currentImage').value;
+
+            if (!title || !date || !category || !excerpt || !content) {
+                showError('Please fill in all required fields');
+                return;
+            }
+
+            // Create post ID from title
+            const postId = editingPostId || createSlug(title);
+
+            // Handle image
+            let imagePath = currentImage;
+            if (imageFile) {
+                // In a real implementation, you'd upload this to a server
+                // For now, we'll use a local path
+                imagePath = `Photos/blog/${imageFile.name}`;
+                showError('Note: Image upload requires a backend server. For now, please manually copy images to Photos/blog/ folder.');
+            }
+
+            if (!imagePath && !imageFile) {
+                showError('Please select a featured image');
+                return;
+            }
+
+            // Format date
+            const dateObj = new Date(date);
+            const formattedDate = dateObj.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Create post object
+            const post = {
+                id: postId,
+                title: title,
+                date: formattedDate,
+                timestamp: date,
+                category: category,
+                excerpt: excerpt,
+                image: imagePath,
+                url: `blog-posts/${postId}.html`
+            };
+
+            // Update or add post
+            if (editingPostId) {
+                const index = posts.findIndex(p => p.id === editingPostId);
+                posts[index] = post;
+            } else {
+                posts.push(post);
+            }
+
+            // Save posts.json
+            await savePosts();
+
+            // Create HTML file
+            await createPostHTML(post, content);
+
+            // Reset form
+            resetForm();
+
+            showSuccess(editingPostId ? 'Post updated successfully!' : 'Post published successfully!');
+
+            // Switch to manage tab
+            setTimeout(() => {
+                document.querySelector('[data-tab="manage"]').click();
+            }, 1500);
+        });
+
+        // Save posts to JSON
+        async function savePosts() {
+            try {
+                const response = await fetch('blog-admin-api.php?action=save-posts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(posts)
+                });
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.error || 'Failed to save posts');
+                }
+
+                // Also save to localStorage as backup
+                localStorage.setItem('blogPosts', JSON.stringify(posts, null, 2));
+            } catch (error) {
+                console.error('Save error:', error);
+                // Fallback to localStorage only
+                localStorage.setItem('blogPosts', JSON.stringify(posts, null, 2));
+                throw error;
+            }
+        }
+
+        // Create post HTML file
+        async function createPostHTML(post, content) {
+            const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${post.title} | Wispy Letters</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header></header>
+
+    <article class="blog-post">
+        <div class="container">
+            <div class="blog-post-header">
+                <h1>${post.title}</h1>
+                <div class="blog-post-meta">
+                    <span class="blog-post-date">${post.date}</span>
+                    <span class="blog-post-category">${post.category}</span>
+                </div>
+            </div>
+
+            <div class="blog-post-featured-image">
+                <img src="../${post.image}" alt="${post.title}">
+            </div>
+
+            <div class="blog-post-content">
+                ${content}
+            </div>
+
+            <div class="blog-post-footer">
+                <a href="../blog.html" class="back-to-blog">← Back to Blog</a>
+            </div>
+        </div>
+    </article>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <img src="../SectionTitles/contact_title.svg" alt="Let's Create Something Beautiful">
+            <div class="contact-content-wrapper">
+                <p class="section-subtitle">Ready to start your project? Get in touch today</p>
+                <form class="contact-form">
+                <div class="form-row">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-row">
+                    <input type="tel" placeholder="Phone Number">
+                    <select required>
+                        <option value="">Select a Service</option>
+                        <option value="wedding">Wedding Invitations</option>
+                        <option value="event">Event Stationery</option>
+                        <option value="artwork">Custom Artwork</option>
+                        <option value="certificates">Certificates & Awards</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <textarea placeholder="Tell me about your project..." rows="5" required></textarea>
+                <button type="submit" class="submit-button">Send Message</button>
+                </form>
+            </div>
+        </div>
+        <footer>
+            <div class="container">
+                <p>&copy; 2025 Wispy Letters. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#">Instagram</a>
+                    <a href="#">Pinterest</a>
+                    <a href="#">Facebook</a>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <script src="../nav.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>`;
+
+            try {
+                const response = await fetch('blog-admin-api.php?action=save-post-html', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: post.id,
+                        html: html
+                    })
+                });
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.error || 'Failed to save HTML');
+                }
+
+                // Also store in localStorage as backup
+                localStorage.setItem(`blogPost_${post.id}`, html);
+            } catch (error) {
+                console.error('Save HTML error:', error);
+                // Fallback to localStorage only
+                localStorage.setItem(`blogPost_${post.id}`, html);
+                throw error;
+            }
+        }
+
+        // Edit post
+        async function editPost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+
+            editingPostId = postId;
+
+            // Fill form
+            document.getElementById('postTitle').value = post.title;
+            document.getElementById('postDate').value = post.timestamp;
+            document.getElementById('postCategory').value = post.category;
+            document.getElementById('postExcerpt').value = post.excerpt;
+            document.getElementById('currentImage').value = post.image;
+
+            // Show image preview
+            document.getElementById('previewImg').src = post.image;
+            document.getElementById('imagePreview').style.display = 'block';
+
+            // Load content from localStorage (in real app, would fetch from HTML file)
+            const savedHTML = localStorage.getItem(`blogPost_${postId}`);
+            if (savedHTML) {
+                // Extract content from HTML
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(savedHTML, 'text/html');
+                const contentDiv = doc.querySelector('.blog-post-content');
+                if (contentDiv) {
+                    editor.setData(contentDiv.innerHTML);
+                }
+            }
+
+            // Update button text
+            document.getElementById('submitButton').textContent = 'Update Post';
+            document.getElementById('cancelEdit').style.display = 'inline-block';
+
+            // Switch to create tab
+            document.querySelector('[data-tab="create"]').click();
+
+            showSuccess('Editing post: ' + post.title);
+        }
+
+        // Delete post
+        async function deletePost(postId) {
+            if (!confirm('Are you sure you want to delete this post?')) return;
+
+            posts = posts.filter(p => p.id !== postId);
+
+            try {
+                await savePosts();
+
+                // Delete HTML file
+                await fetch('blog-admin-api.php?action=delete-post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: postId })
+                });
+
+                // Remove from localStorage
+                localStorage.removeItem(`blogPost_${postId}`);
+
+                displayPosts();
+                showSuccess('Post deleted successfully');
+            } catch (error) {
+                console.error('Delete error:', error);
+                showError('Failed to delete post');
+            }
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('postForm').reset();
+            editor.setData('');
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('postId').value = '';
+            document.getElementById('currentImage').value = '';
+            document.getElementById('submitButton').textContent = 'Publish Post';
+            document.getElementById('cancelEdit').style.display = 'none';
+            editingPostId = null;
+        }
+
+        // Cancel edit
+        document.getElementById('cancelEdit').addEventListener('click', resetForm);
+
+        // Show success message
+        function showSuccess(message) {
+            const el = document.getElementById('successMessage');
+            el.textContent = message;
+            el.style.display = 'block';
+            setTimeout(() => {
+                el.style.display = 'none';
+            }, 5000);
+        }
+
+        // Show error message
+        function showError(message) {
+            const el = document.getElementById('errorMessage');
+            el.textContent = message;
+            el.style.display = 'block';
+            setTimeout(() => {
+                el.style.display = 'none';
+            }, 8000);
+        }
+
+        // Load posts on page load
+        loadPosts();
+
+        // Load from localStorage if available
+        const savedPosts = localStorage.getItem('blogPosts');
+        if (savedPosts) {
+            try {
+                posts = JSON.parse(savedPosts);
+            } catch (e) {
+                console.error('Error loading saved posts:', e);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <ul class="nav-links nav-links-right">
                 <li><a href="portfolio.html">Portfolio</a></li>
                 <li><a href="about.html">About</a></li>
+                <li><a href="blog.html">Blog</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
