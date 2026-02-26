@@ -597,7 +597,7 @@ nav {
 .services-list-container {
     position: relative;
     z-index: 10;
-    max-width: 800px;
+    max-width: 600px;
     width: 100%;
     text-align: center;
 }
@@ -2162,20 +2162,20 @@ footer p {
     transform: scale(1.2);
 }
 
-/* Staggered Gallery Section */
-.staggered-gallery-section {
+/* Grid Gallery Section */
+.grid-gallery-section {
     padding: 120px 60px;
     background: transparent;
     position: relative;
     z-index: 1;
 }
 
-.staggered-gallery-container {
+.grid-gallery-container {
     width: 90vw;
     margin: 0 auto;
 }
 
-.staggered-gallery-container h2 {
+.grid-gallery-container h2 {
     font-size: 3rem;
     font-weight: 300;
     color: var(--text-dark);
@@ -2183,30 +2183,63 @@ footer p {
     text-align: left;
 }
 
-.staggered-gallery-container > p {
+.grid-gallery-container > p {
     margin-bottom: 20px;
 }
 
-.staggered-gallery-grid {
+.grid-gallery-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 30px;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
     margin-top: 80px;
-    align-items: start;
+    align-items: stretch;
+    min-height: 90vh;
 }
 
-.staggered-gallery-item {
+.grid-gallery-right {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    transition: transform 0.1s ease-out;
+    gap: 1rem;
 }
 
-.staggered-gallery-item img {
-    width: 100%;
+.grid-gallery-top-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.grid-gallery-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.grid-gallery-img-wrapper {
+    overflow: hidden;
+    height: calc(45vh - 0.5rem);
+}
+
+.grid-gallery-grid > .grid-gallery-item .grid-gallery-img-wrapper,
+.grid-gallery-right > .grid-gallery-item .grid-gallery-img-wrapper {
+    flex: 1;
+    min-height: 0;
     height: auto;
+}
+
+.grid-gallery-right > .grid-gallery-item {
+    flex: 1;
+}
+
+.grid-gallery-item img {
+    width: 100%;
+    height: calc(45vh - 0.5rem + 80px);
     object-fit: cover;
     display: block;
+    will-change: transform;
+}
+
+.grid-gallery-grid > .grid-gallery-item img {
+    height: calc(90vh + 160px);
 }
 
 .gallery-caption {

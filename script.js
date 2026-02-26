@@ -969,25 +969,29 @@ if (servicesListSection) {
     });
 }
 
-// Parallax effect for staggered gallery
-const staggeredGalleryItems = document.querySelectorAll('.staggered-gallery-item');
-if (staggeredGalleryItems.length > 0) {
-    const staggeredGallerySection = document.querySelector('.staggered-gallery-section');
 
-    window.addEventListener('scroll', function() {
-        const scrollY = window.pageYOffset;
-        const sectionTop = staggeredGallerySection.offsetTop;
-        const sectionHeight = staggeredGallerySection.offsetHeight;
-        const viewportHeight = window.innerHeight;
+// Parallax within grid gallery image containers
+const gridGallerySection = document.querySelector('.grid-gallery-section');
+if (gridGallerySection) {
+    const gridGalleryItems = document.querySelectorAll('.grid-gallery-item');
 
-        if (scrollY + viewportHeight > sectionTop && scrollY < sectionTop + sectionHeight) {
-            staggeredGalleryItems.forEach(item => {
-                const speed = parseFloat(item.dataset.parallaxSpeed) || 0.3;
-                const offset = (scrollY - sectionTop) * speed;
-                item.style.transform = `translateY(${offset}px)`;
-            });
-        }
-    });
+    function updateGridGalleryParallax() {
+        gridGalleryItems.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+
+            if (rect.bottom > 0 && rect.top < viewportHeight) {
+                const wrapper = item.querySelector('.grid-gallery-img-wrapper');
+                const img = item.querySelector('img');
+                const maxShift = img.offsetHeight - wrapper.offsetHeight;
+                const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+                img.style.transform = `translateY(${-progress * maxShift}px)`;
+            }
+        });
+    }
+
+    window.addEventListener('scroll', updateGridGalleryParallax);
+    updateGridGalleryParallax();
 }
 
 // About section image parallax
