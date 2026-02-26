@@ -917,6 +917,58 @@ if (testimonialItems.length > 0 && testimonialDots.length > 0) {
     startAutoplay();
 }
 
+// Services list: fade-in images and parallax
+const servicesListSection = document.querySelector('.services-list-section');
+if (servicesListSection) {
+    const servicesListImages = document.querySelectorAll('.services-list-image');
+    const servicesListItems = document.querySelectorAll('.services-list-item');
+
+    window.addEventListener('load', function() {
+        servicesListImages.forEach(image => {
+            image.style.opacity = 1;
+        });
+    });
+
+    const listObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, {
+        threshold: 0.3,
+        rootMargin: '0px 0px -10% 0px'
+    });
+
+    servicesListItems.forEach(item => {
+        listObserver.observe(item);
+    });
+
+    window.addEventListener('scroll', function() {
+        const scrollY = window.pageYOffset;
+        const sectionTop = servicesListSection.offsetTop;
+        const sectionHeight = servicesListSection.offsetHeight;
+        const viewportHeight = window.innerHeight;
+
+        if (scrollY + viewportHeight > sectionTop && scrollY < sectionTop + sectionHeight) {
+            const relativeScroll = scrollY - sectionTop + viewportHeight;
+            const scrollProgress = relativeScroll / (sectionHeight + viewportHeight);
+
+            servicesListImages.forEach((image, index) => {
+                let direction;
+                if (index === 0) direction = 1;
+                else if (index === 1) direction = -1;
+                else if (index === 2) direction = -1;
+                else direction = 1;
+
+                const translateY = direction * scrollProgress * 200;
+                image.style.transform = `translateY(${translateY}px)`;
+            });
+        }
+    });
+}
+
 // Parallax effect for staggered gallery
 const staggeredGalleryItems = document.querySelectorAll('.staggered-gallery-item');
 if (staggeredGalleryItems.length > 0) {
@@ -928,13 +980,31 @@ if (staggeredGalleryItems.length > 0) {
         const sectionHeight = staggeredGallerySection.offsetHeight;
         const viewportHeight = window.innerHeight;
 
-        // Only apply parallax when section is in viewport
         if (scrollY + viewportHeight > sectionTop && scrollY < sectionTop + sectionHeight) {
             staggeredGalleryItems.forEach(item => {
                 const speed = parseFloat(item.dataset.parallaxSpeed) || 0.3;
                 const offset = (scrollY - sectionTop) * speed;
                 item.style.transform = `translateY(${offset}px)`;
             });
+        }
+    });
+}
+
+// About section image parallax
+const aboutParallaxImg = document.querySelector('.about-parallax-img');
+if (aboutParallaxImg) {
+    const aboutSection = document.querySelector('.about');
+
+    window.addEventListener('scroll', function() {
+        const scrollY = window.pageYOffset;
+        const sectionTop = aboutSection.offsetTop;
+        const sectionHeight = aboutSection.offsetHeight;
+        const viewportHeight = window.innerHeight;
+
+        if (scrollY + viewportHeight > sectionTop && scrollY < sectionTop + sectionHeight) {
+            const progress = (scrollY + viewportHeight - sectionTop) / (sectionHeight + viewportHeight);
+            const maxShift = aboutParallaxImg.offsetHeight - aboutParallaxImg.parentElement.offsetHeight;
+            aboutParallaxImg.style.transform = `translateY(${-progress * maxShift}px)`;
         }
     });
 }

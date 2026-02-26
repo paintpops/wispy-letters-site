@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-<body class="color-transition">
+<body>
     <header></header>
 
     <section class="hero-title-section">
@@ -158,7 +158,7 @@
     </section>
 -->
 
-    <section class="service-section">
+    <section class="service-section service-section-static">
         <div class="service-container">
             <div class="service-content">
                 <p>How it works</p>
@@ -239,82 +239,6 @@
 
     <script src="nav.js"></script>
     <script src="script.js"></script>
-    <script>
-        // Background color change on scroll
-        const sections = [
-            { element: document.querySelector('.video-grow-section'), color: '#f5f3ed' },
-            { element: document.querySelector('.services-list-section'), color: '#c8c4bc' },
-            { element: document.querySelector('.innerpage'), color: '#ffffff' },
-            { element: document.querySelector('.event-recaps-section'), color: '#d5d0c5' },
-            { element: document.querySelector('.service-section'), color: '#e8e5dd' },
-            { element: document.querySelector('#contact'), color: '#b8b5ad' }
-        ];
-
-        function updateBackgroundColor() {
-            const scrollY = window.pageYOffset;
-            const viewportHeight = window.innerHeight;
-            const scrollCenter = scrollY + viewportHeight / 2;
-
-            for (let i = 0; i < sections.length; i++) {
-                const section = sections[i];
-                if (!section.element) continue;
-
-                const sectionTop = section.element.offsetTop;
-                const sectionBottom = sectionTop + section.element.offsetHeight;
-
-                // Check if scroll center is within this section
-                if (scrollCenter >= sectionTop && scrollCenter < sectionBottom) {
-                    // Calculate progress through the section for smooth transition
-                    const sectionProgress = (scrollCenter - sectionTop) / section.element.offsetHeight;
-
-                    // If we're in the first half of the section, blend with previous section color
-                    if (i > 0 && sectionProgress < 0.3) {
-                        const prevColor = sections[i - 1].color;
-                        const blendFactor = sectionProgress / 0.3;
-                        document.body.style.backgroundColor = blendColor(prevColor, section.color, blendFactor);
-                    }
-                    // If we're in the last half, blend with next section color
-                    else if (i < sections.length - 1 && sectionProgress > 0.7) {
-                        const nextColor = sections[i + 1].color;
-                        const blendFactor = (sectionProgress - 0.7) / 0.3;
-                        document.body.style.backgroundColor = blendColor(section.color, nextColor, blendFactor);
-                    }
-                    // Otherwise use the section's color
-                    else {
-                        document.body.style.backgroundColor = section.color;
-                    }
-                    break;
-                }
-            }
-        }
-
-        // Helper function to blend two hex colors
-        function blendColor(color1, color2, factor) {
-            const c1 = hexToRgb(color1);
-            const c2 = hexToRgb(color2);
-
-            const r = Math.round(c1.r + (c2.r - c1.r) * factor);
-            const g = Math.round(c1.g + (c2.g - c1.g) * factor);
-            const b = Math.round(c1.b + (c2.b - c1.b) * factor);
-
-            return `rgb(${r}, ${g}, ${b})`;
-        }
-
-        // Helper function to convert hex to RGB
-        function hexToRgb(hex) {
-            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? {
-                r: parseInt(result[1], 16),
-                g: parseInt(result[2], 16),
-                b: parseInt(result[3], 16)
-            } : null;
-        }
-
-        // Update on scroll
-        window.addEventListener('scroll', updateBackgroundColor);
-        // Initial update
-        updateBackgroundColor();
-    </script>
     <script>
         // Scrolling images within containers (staggered)
         const scrollingImagesSection = document.querySelector('.scrolling-images-section');
