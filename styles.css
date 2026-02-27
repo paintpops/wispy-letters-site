@@ -690,6 +690,88 @@ nav {
 }
 
 /* Event Recaps Section */
+/* Services Detail Section */
+.services-detail-section {
+    margin: 2rem;
+}
+
+.services-detail-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 60px;
+    align-items: stretch;
+}
+
+.services-detail-left {
+    position: relative;
+}
+
+.services-detail-sticky {
+    position: sticky;
+    top: 120px;
+}
+
+.services-detail-sticky h2 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+}
+
+.services-detail-sticky p {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.services-detail-middle,
+.services-detail-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.services-detail-right {
+    margin-top: 500px;
+}
+
+.services-detail-middle .services-detail-item:nth-child(2) {
+    margin-top: 250px;
+}
+
+.services-detail-right .services-detail-item:nth-child(2) {
+    margin-top: 250px;
+}
+
+.services-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.services-detail-img-wrapper {
+    height: 600px;
+    overflow: hidden;
+}
+
+.services-detail-img-wrapper img {
+    width: 100%;
+    height: calc(600px + 100px);
+    object-fit: cover;
+    display: block;
+    will-change: transform;
+}
+
+.services-detail-caption {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+    margin: 0;
+}
+
 .event-recaps-section {
     padding: 100px 0;
     background: transparent;
@@ -737,9 +819,9 @@ nav {
 
 .event-recaps-grid {
     display: flex;
-    gap: 30px;
+    gap: 1rem;
     width: 100%;
-    height: calc((100vw - 2 * 100px - 90px) / 4);
+    height: 400px;
 }
 
 .event-recap-card {
@@ -750,7 +832,7 @@ nav {
     display: block;
     text-decoration: none;
     cursor: pointer;
-    transition: flex 0.6s ease;
+    transition: flex 0.3s ease;
 }
 
 .event-recap-card:hover {
@@ -764,32 +846,33 @@ nav {
 .event-recap-card img {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 400px;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
-    transform: none !important;
 }
 
 .event-recap-overlay {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    object-fit: cover;
     height: 100%;
-    background: rgba(0, 0, 0, 0.85);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 75%, transparent 100%);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-end;
+    align-items: flex-start;
     padding: 30px;
     opacity: 0;
-    transition: opacity 0.4s ease;
-    text-align: center;
+    transition: opacity 0.2s ease;
+    text-align: left;
 }
 
 .event-recap-card:hover .event-recap-overlay {
     opacity: 1;
+    transition: opacity 0.3s ease 0.25s;
 }
 
 .event-recap-overlay h3 {
@@ -803,7 +886,6 @@ nav {
     font-size: 0.95rem;
     color: rgba(255, 255, 255, 0.85);
     line-height: 1.5;
-    margin-bottom: 25px;
 }
 
 .event-recap-button {
@@ -2164,15 +2246,13 @@ footer p {
 
 /* Grid Gallery Section */
 .grid-gallery-section {
-    padding: 120px 60px;
     background: transparent;
     position: relative;
     z-index: 1;
 }
 
 .grid-gallery-container {
-    width: 90vw;
-    margin: 0 auto;
+    margin: 1rem;
 }
 
 .grid-gallery-container h2 {
@@ -2191,9 +2271,14 @@ footer p {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    margin-top: 80px;
     align-items: stretch;
     min-height: 90vh;
+}
+
+.grid-gallery-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .grid-gallery-right {
@@ -2206,6 +2291,7 @@ footer p {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+    height: 30%;
 }
 
 .grid-gallery-item {
@@ -2216,30 +2302,17 @@ footer p {
 
 .grid-gallery-img-wrapper {
     overflow: hidden;
-    height: calc(45vh - 0.5rem);
-}
-
-.grid-gallery-grid > .grid-gallery-item .grid-gallery-img-wrapper,
-.grid-gallery-right > .grid-gallery-item .grid-gallery-img-wrapper {
     flex: 1;
     min-height: 0;
     height: auto;
 }
 
-.grid-gallery-right > .grid-gallery-item {
-    flex: 1;
-}
-
 .grid-gallery-item img {
     width: 100%;
-    height: calc(45vh - 0.5rem + 80px);
+    height: calc(90vh + 80px);
     object-fit: cover;
     display: block;
     will-change: transform;
-}
-
-.grid-gallery-grid > .grid-gallery-item img {
-    height: calc(90vh + 160px);
 }
 
 .gallery-caption {

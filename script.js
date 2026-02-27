@@ -994,6 +994,39 @@ if (gridGallerySection) {
     updateGridGalleryParallax();
 }
 
+// Services detail section image parallax (lerp easing, matches Lenis lerp: 0.1)
+const servicesDetailSection = document.querySelector('.services-detail-section');
+if (servicesDetailSection) {
+    const servicesDetailWrappers = document.querySelectorAll('.services-detail-img-wrapper');
+    const currentY = new Array(servicesDetailWrappers.length).fill(0);
+    const targetY = new Array(servicesDetailWrappers.length).fill(0);
+
+    function updateServicesDetailTargets() {
+        const viewportHeight = window.innerHeight;
+        servicesDetailWrappers.forEach((wrapper, i) => {
+            const rect = wrapper.getBoundingClientRect();
+            if (rect.bottom > 0 && rect.top < viewportHeight) {
+                const img = wrapper.querySelector('img');
+                const maxShift = img.offsetHeight - wrapper.offsetHeight;
+                const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+                targetY[i] = -progress * maxShift;
+            }
+        });
+    }
+
+    function animateServicesDetail() {
+        updateServicesDetailTargets();
+        servicesDetailWrappers.forEach((wrapper, i) => {
+            currentY[i] += (targetY[i] - currentY[i]) * 0.1;
+            const img = wrapper.querySelector('img');
+            img.style.transform = `translateY(${currentY[i]}px)`;
+        });
+        requestAnimationFrame(animateServicesDetail);
+    }
+
+    animateServicesDetail();
+}
+
 // About section image parallax
 const aboutParallaxImg = document.querySelector('.about-parallax-img');
 if (aboutParallaxImg) {
@@ -1012,3 +1045,30 @@ if (aboutParallaxImg) {
         }
     });
 }
+
+// Onsite page: scrolling images within containers (staggered)
+const scrollingImagesSection = document.querySelector('.scrolling-images-section');
+if (scrollingImagesSection) {
+    const scrollingImageContainers = document.querySelectorAll('.scrolling-image-container');
+
+    window.addEventListener('scroll', function() {
+        const scrollY = window.pageYOffset;
+        const viewportHeight = window.innerHeight;
+
+        scrollingImageContainers.forEach((container, index) => {
+            const containerTop = container.getBoundingClientRect().top + scrollY;
+            const containerHeight = container.offsetHeight;
+
+            if (scrollY + viewportHeight > containerTop && scrollY < containerTop + containerHeight) {
+                const image = container.querySelector('.scrolling-image');
+                const imageHeight = image.offsetHeight;
+                const maxScroll = imageHeight - containerHeight;
+                const containerProgress = (scrollY + viewportHeight - containerTop) / (containerHeight + viewportHeight);
+                const scrollSpeed = index === 0 ? 0.6 : 1.2;
+                const scrollAmount = Math.max(0, Math.min(maxScroll, containerProgress * maxScroll * scrollSpeed));
+                image.style.transform = `translateY(-${scrollAmount}px)`;
+            }
+        });
+    });
+}
+
