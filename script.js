@@ -1027,23 +1027,64 @@ if (servicesDetailSection) {
     animateServicesDetail();
 }
 
-// About section image parallax
+// Instudio services detail section image parallax (mirrors services-detail parallax)
+const instudioServicesDetailSection = document.querySelector('.instudio-services-detail-section');
+if (instudioServicesDetailSection) {
+    const instudioDetailWrappers = document.querySelectorAll('.instudio-services-detail-img-wrapper');
+    const instudioCurrentY = new Array(instudioDetailWrappers.length).fill(0);
+    const instudioTargetY = new Array(instudioDetailWrappers.length).fill(0);
+
+    function updateInstudioDetailTargets() {
+        const viewportHeight = window.innerHeight;
+        instudioDetailWrappers.forEach((wrapper, i) => {
+            const rect = wrapper.getBoundingClientRect();
+            if (rect.bottom > 0 && rect.top < viewportHeight) {
+                const img = wrapper.querySelector('img');
+                const maxShift = img.offsetHeight - wrapper.offsetHeight;
+                const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+                instudioTargetY[i] = -progress * maxShift;
+            }
+        });
+    }
+
+    function animateInstudioDetail() {
+        updateInstudioDetailTargets();
+        instudioDetailWrappers.forEach((wrapper, i) => {
+            instudioCurrentY[i] += (instudioTargetY[i] - instudioCurrentY[i]) * 0.1;
+            const img = wrapper.querySelector('img');
+            img.style.transform = `translateY(${instudioCurrentY[i]}px)`;
+        });
+        requestAnimationFrame(animateInstudioDetail);
+    }
+
+    animateInstudioDetail();
+}
+
+// About section image parallax (lerp easing, matches instudio/services-detail pattern)
 const aboutParallaxImg = document.querySelector('.about-parallax-img');
 if (aboutParallaxImg) {
-    const aboutSection = document.querySelector('.about');
+    let aboutCurrentY = 0;
+    let aboutTargetY = 0;
 
-    window.addEventListener('scroll', function() {
-        const scrollY = window.pageYOffset;
-        const sectionTop = aboutSection.offsetTop;
-        const sectionHeight = aboutSection.offsetHeight;
+    function updateAboutParallaxTarget() {
+        const wrapper = aboutParallaxImg.parentElement;
+        const rect = wrapper.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-
-        if (scrollY + viewportHeight > sectionTop && scrollY < sectionTop + sectionHeight) {
-            const progress = (scrollY + viewportHeight - sectionTop) / (sectionHeight + viewportHeight);
-            const maxShift = aboutParallaxImg.offsetHeight - aboutParallaxImg.parentElement.offsetHeight;
-            aboutParallaxImg.style.transform = `translateY(${-progress * maxShift}px)`;
+        if (rect.bottom > 0 && rect.top < viewportHeight) {
+            const maxShift = aboutParallaxImg.offsetHeight - wrapper.offsetHeight;
+            const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+            aboutTargetY = -progress * maxShift;
         }
-    });
+    }
+
+    function animateAboutParallax() {
+        updateAboutParallaxTarget();
+        aboutCurrentY += (aboutTargetY - aboutCurrentY) * 0.1;
+        aboutParallaxImg.style.transform = `translateY(${aboutCurrentY}px)`;
+        requestAnimationFrame(animateAboutParallax);
+    }
+
+    animateAboutParallax();
 }
 
 // Onsite page: scrolling images within containers (staggered)

@@ -60,45 +60,7 @@
         </div>
     </section>
 
-    <section class="grid-gallery-section">
-        <div class="grid-gallery-container">
-            <h2>Ideas for personalized items</h2>
-            <div class="grid-gallery-grid">
-                <div class="grid-gallery-left">
-                    <div class="grid-gallery-item">
-                        <div class="grid-gallery-img-wrapper">
-                            <img src="Photos/instudio/matera-suite02.jpg" alt="Wedding Invitations">
-                        </div>
-                        <p class="gallery-caption">Wedding invitations</p>
-                    </div>
-                </div>
-                <div class="grid-gallery-right">
-                    <div class="grid-gallery-top-row">
-                        <div class="grid-gallery-item">
-                            <div class="grid-gallery-img-wrapper">
-                                <img src="Photos/instudio/branding01.png" alt="Custom Branding">
-                            </div>
-                            <p class="gallery-caption">Custom branding</p>
-                        </div>
-                        <div class="grid-gallery-item">
-                            <div class="grid-gallery-img-wrapper">
-                                <img src="Photos/instudio/Taylor&Porter_L&DWedding_075.jpg" alt="Event Signage">
-                            </div>
-                            <p class="gallery-caption">Event signage</p>
-                        </div>
-                    </div>
-                    <div class="grid-gallery-bottom-row">
-                    <div class="grid-gallery-item">
-                        <div class="grid-gallery-img-wrapper">
-                            <img src="Photos/instudio/placecards01.jpg" alt="Place Cards">
-                        </div>
-                        <p class="gallery-caption">Place cards</p>
-                    </div>
-                </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!--
     <section class="service-section">
@@ -151,6 +113,59 @@
     </section>
 
 -->
+
+    <section class="instudio-services-detail-section">
+        <div class="instudio-services-detail-container">
+            <div class="instudio-services-detail-left">
+                <div class="instudio-services-detail-item">
+                    <div class="instudio-services-detail-img-wrapper">
+                        <img src="Photos/instudio/placecards01.jpg" alt="Place cards">
+                    </div>
+                    <h4>Place cards</h4>
+                    <p class="instudio-services-detail-caption">Elegant hand-lettered place cards that add a personal touch to any table setting.</p>
+                </div>
+                <div class="instudio-services-detail-item">
+                    <div class="instudio-services-detail-img-wrapper">
+                        <img src="Photos/instudio/matera-suite02.jpg" alt="Custom commissions">
+                    </div>
+                    <h4>Custom commissions</h4>
+                    <p class="instudio-services-detail-caption">Bespoke calligraphy artwork crafted to your specifications for any occasion.</p>
+                </div>
+            </div>
+            <div class="instudio-services-detail-middle">
+                <div class="instudio-services-detail-item">
+                    <div class="instudio-services-detail-img-wrapper">
+                        <img src="Photos/instudio/Taylor&Porter_L&DWedding_075.jpg" alt="Wedding calligraphy">
+                    </div>
+                    <h4>Wedding stationery</h4>
+                    <p class="instudio-services-detail-caption">Handcrafted invitations, envelopes, and day-of stationery to make your wedding unforgettable.</p>
+                </div>
+                <div class="instudio-services-detail-item">
+                    <div class="instudio-services-detail-img-wrapper">
+                        <img src="Photos/onsite/gucci-onsite.jpg" alt="Engraving">
+                    </div>
+                    <h4>Engraving</h4>
+                    <p class="instudio-services-detail-caption">Personalized engraving on glass, metal, or stone to commemorate any milestone.</p>
+                </div>
+            </div>
+            <div class="instudio-services-detail-right">
+                <div class="instudio-services-detail-item">
+                    <div class="instudio-services-detail-img-wrapper">
+                        <img src="Photos/instudio/branding01.png" alt="Branding and design">
+                    </div>
+                    <h4>Branding & design</h4>
+                    <p class="instudio-services-detail-caption">Custom calligraphy logos and lettering designs for packaging, cards, and more.</p>
+                </div>
+                <div class="instudio-services-detail-item">
+                    <div class="instudio-services-detail-img-wrapper">
+                        <img src="Photos/onsite/pontera-onsite.jpg" alt="Hot foiling">
+                    </div>
+                    <h4>Hot foiling</h4>
+                    <p class="instudio-services-detail-caption">Metallic foil applied to leather, fabric, or paper for a luxurious, lustrous finish.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section class="service-section service-section-static">
         <div class="service-container">
@@ -232,42 +247,5 @@
 
     <script src="nav.js"></script>
     <script src="script.js"></script>
-    <script>
-        // Video grow on scroll effect - simple width grow
-        const videoGrowSection = document.querySelector('.video-grow-section');
-        if (videoGrowSection) {
-            const videoWrapper = document.querySelector('.video-grow-wrapper');
-
-            window.addEventListener('scroll', function() {
-                const scrollY = window.pageYOffset;
-                const sectionTop = videoGrowSection.offsetTop;
-                const sectionHeight = videoGrowSection.offsetHeight;
-                const viewportHeight = window.innerHeight;
-
-                // Start growing only after scrolling 500px into the section
-                const startTrigger = sectionTop - viewportHeight + 500;
-                const endTrigger = sectionTop + sectionHeight - viewportHeight;
-
-                if (scrollY < startTrigger) {
-                    // Before trigger - stay at 60vw
-                    videoWrapper.style.width = '60vw';
-                } else if (scrollY >= startTrigger && scrollY <= endTrigger) {
-                    // Calculate progress between start and end triggers
-                    const progress = (scrollY - startTrigger) / (endTrigger - startTrigger);
-                    const clampedProgress = Math.max(0, Math.min(1, progress));
-
-                    // Grow from 60vw to 100vw
-                    const startWidth = 60;
-                    const endWidth = 100;
-                    const currentWidth = startWidth + (endWidth - startWidth) * clampedProgress;
-
-                    videoWrapper.style.width = `${currentWidth}vw`;
-                } else {
-                    // After end trigger - stay at 100vw
-                    videoWrapper.style.width = '100vw';
-                }
-            });
-        }
-    </script>
 </body>
 </html>
