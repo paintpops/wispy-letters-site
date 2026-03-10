@@ -141,7 +141,7 @@ const introSection = document.querySelector('.intro');
 if (introSection) {
     const introImages = document.querySelectorAll('.intro-image');
     const introContent = document.querySelector('.intro-content');
-    const introH2 = introContent.querySelector('h2');
+    const introH2 = introContent.querySelector('h1');
     let wordAnimationTriggered = false;
 
     window.addEventListener('scroll', function() {
@@ -327,20 +327,13 @@ if (heroSection && videoSection) {
 window.addEventListener('load', function() {
     setTimeout(() => {
         const h2Elements = document.querySelectorAll('h2');
-        const introH2 = document.querySelector('.intro-content h2');
+        const introH2 = document.querySelector('.intro-content h1');
 
-        h2Elements.forEach(h2 => {
-            // Skip h2 elements with images
-            if (h2.querySelector('img')) return;
-
-            const text = h2.textContent.trim();
+        function wrapWordsInSpans(el) {
+            const text = el.textContent.trim();
             const words = text.split(' ');
-
-            // Clear the h2
-            h2.innerHTML = '';
-            h2.style.overflow = 'visible'; // Changed from 'hidden' to allow words to be visible
-
-            // Add each word wrapped in a span
+            el.innerHTML = '';
+            el.style.overflow = 'visible';
             words.forEach((word, index) => {
                 const wordSpan = document.createElement('span');
                 wordSpan.textContent = word;
@@ -349,8 +342,22 @@ window.addEventListener('load', function() {
                 wordSpan.style.opacity = '0';
                 wordSpan.style.transform = 'translateY(100%)';
                 wordSpan.setAttribute('data-animation-delay', `${index * 0.03}s`);
-                h2.appendChild(wordSpan);
+                el.appendChild(wordSpan);
             });
+        }
+
+        h2Elements.forEach(h2 => {
+            if (h2.querySelector('img')) return;
+            wrapWordsInSpans(h2);
+        });
+
+        if (introH2) {
+            wrapWordsInSpans(introH2);
+        }
+
+        const h1Elements = document.querySelectorAll('h1');
+        h1Elements.forEach(h1 => {
+            if (h1 !== introH2) wrapWordsInSpans(h1);
         });
 
         // Observe h2 elements and trigger animation when in view
@@ -373,6 +380,10 @@ window.addEventListener('load', function() {
             if (!h2.querySelector('img') && h2 !== introH2) {
                 h2Observer.observe(h2);
             }
+        });
+
+        h1Elements.forEach(h1 => {
+            if (h1 !== introH2) h2Observer.observe(h1);
         });
     }, 100);
 });

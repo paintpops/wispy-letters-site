@@ -1,27 +1,27 @@
 @font-face {
     font-family: 'Sentient';
-    src: url('fonts/Sentient-Extralight.otf') format('opentype');
+    src: url('fonts/Sentient-Light.otf') format('opentype');
     font-weight: 200;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Sentient';
-    src: url('fonts/Sentient-ExtralightItalic.otf') format('opentype');
+    font-family: 'Mazius Display';
+    src: url('fonts/MaziusDisplay-Extraitalic.otf') format('opentype');
     font-weight: 200;
     font-style: italic;
 }
 
 @font-face {
-    font-family: 'Sentient';
-    src: url('fonts/Sentient-Light.otf') format('opentype');
+    font-family: 'Mazius Display';
+    src: url('fonts/MaziusDisplay-Regular.otf') format('opentype');
     font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Sentient';
-    src: url('fonts/Sentient-LightItalic.otf') format('opentype');
+    font-family: 'Mazius Display';
+    src: url('fonts/MaziusDisplay-ExtraItalicBold.otf') format('opentype');
     font-weight: 300;
     font-style: italic;
 }
@@ -66,22 +66,49 @@ body.bg-dark .intro-content h2 {
     color: var(--light-bg);
 }
 
-h1, h2, h3 {
-    font-family: 'Sentient', sans-serif;
+h1, h2 {
+    font-family: 'Mazius Display', sans-serif;
     font-weight: 200;
+    font-style: italic;
+    color: var(--text-dark);
 }
 
 h1 {
+    font-size: 5rem;
+    line-height: 6.25rem;
+    margin-bottom: 2rem;
+}
+
+h2 {
     font-size: 3rem;
-    line-height: 3.75rem;
+    line-height: 4.25rem;
+}
+
+h3 {
+    font-size: 2rem;
+    line-height: 2.25rem;
+    font-family: 'Mazius Display', sans-serif;
+    font-weight: 200;
+    font-style: normal;
+    color: var(--text-dark);
+}
+
+h4 {
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+    font-family: 'Mazius Display', sans-serif;
+    font-weight: 200;
+    font-style: normal;
+    color: var(--text-light);
 }
 
 p {
-    font-family: 'Sentient', sans-serif;
+    font-family: 'Mazius Display', sans-serif;
     font-weight: 200;
     padding-bottom: 1.5rem;
-    font-size: 1rem;
-    line-height: 1.6rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.01rem;
+    line-height: 1.8rem;
     color: var(--text-light);
 }
 
@@ -150,6 +177,9 @@ nav {
 .nav-links {
     display: flex;
     list-style: none;
+    text-transform: uppercase;
+    font-family: 'Mazius Display', serif;
+    letter-spacing: 0.15rem;
     gap: 40px;
 }
 
@@ -168,8 +198,8 @@ nav {
 .nav-links a {
     text-decoration: none;
     color: var(--text-dark);
-    font-size: 0.95rem;
-    font-weight: 400;
+    font-size: 0.8rem;
+    font-weight: 300;
     transition: color 0.3s ease;
     display: block;
     padding-bottom: 5px;
@@ -193,7 +223,7 @@ nav {
 
 .nav-links a:hover {
     color: var(--secondary-color);
-    font-family: 'Sentient', sans-serif;
+    font-family: 'Mazius Display', sans-serif;
     font-weight: 200;
     font-style: italic;
 }
@@ -711,12 +741,6 @@ nav {
     top: 120px;
 }
 
-.services-detail-sticky h2 {
-    font-size: 2.5rem;
-    font-weight: 300;
-    color: var(--text-dark);
-    margin-bottom: 1.5rem;
-}
 
 .services-detail-sticky p {
     font-size: 1rem;
@@ -1231,20 +1255,13 @@ nav {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 1024px;
+    max-width: 1440px;
     text-align: center;
     padding: 40px;
     z-index: 8;
     will-change: opacity, filter;
     opacity: 0;
     transition: opacity 0.6s ease-out;
-}
-
-.intro-content h2 {
-    font-size: 2.25rem;
-    color: var(--text-light);
-    font-weight: 200;
-    line-height: 1.4em;
 }
 
 /* Service Details Section */
@@ -1362,7 +1379,6 @@ nav {
 .hero-title-container {
     position: relative;
     width: 100%;
-    max-width: 1200px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1381,22 +1397,6 @@ nav {
     position: relative;
     z-index: 2;
     text-align: center;
-    max-width: 800px;
-}
-
-.hero-title-content h1 {
-    font-size: 4rem;
-    font-weight: 400;
-    color: var(--text-dark);
-    margin-bottom: 30px;
-    line-height: 1.2;
-}
-
-.hero-title-content p {
-    font-size: 1.5rem;
-    font-weight: 300;
-    color: var(--text-dark);
-    line-height: 1.6;
 }
 
 .video-grow-title {
@@ -1529,8 +1529,7 @@ nav {
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
+    text-indent: 0;
     line-height: 1.6;
     color: #666;
 }
@@ -1721,7 +1720,7 @@ nav {
     text-decoration: none;
     color: var(--text-dark);
     margin-top: 2rem;
-    font-family: 'Sentient', sans-serif;
+    font-family: 'Mazius Display', sans-serif;
     font-size: 1.25rem;
     font-style: italic;
     font-weight: 200;
@@ -2162,7 +2161,7 @@ nav {
     padding: 16px;
     border: 1px solid #ddd;
     border-radius: 0.5rem;
-    font-family: 'Sentient', sans-serif;
+    font-family: 'Mazius Display', sans-serif;
     font-weight: 300;
     font-size: 0.95rem;
     background: var(--white);
@@ -2193,7 +2192,7 @@ nav {
     color: var(--white);
     border: none;
     border-radius: 50px;
-    font-family: 'Sentient', sans-serif;
+    font-family: 'Mazius Display', sans-serif;
     font-weight: 300;
     font-size: 1rem;
     letter-spacing: 1px;
@@ -2429,7 +2428,7 @@ footer p {
 
 .social-links a:hover {
     color: var(--accent-color);
-    font-family: 'Sentient', sans-serif;
+    font-family: 'Mazius Display', sans-serif;
     font-weight: 200;
     font-style: italic;
 }
