@@ -74,8 +74,8 @@ h1, h2 {
 }
 
 h1 {
-    font-size: 5rem;
-    line-height: 6.25rem;
+    font-size: 3.5rem;
+    line-height: 4.5rem;
     margin-bottom: 2rem;
 }
 
@@ -90,7 +90,6 @@ h3 {
     font-family: 'Mazius Display', sans-serif;
     font-weight: 200;
     font-style: normal;
-    color: var(--text-dark);
 }
 
 h4 {
@@ -98,17 +97,15 @@ h4 {
     line-height: 1.75rem;
     font-family: 'Mazius Display', sans-serif;
     font-weight: 200;
-    font-style: normal;
-    color: var(--text-light);
+    font-style: italic;
 }
 
 p {
     font-family: 'Mazius Display', sans-serif;
     font-weight: 200;
-    padding-bottom: 1.5rem;
-    font-size: 1.1rem;
-    letter-spacing: 0.01rem;
-    line-height: 1.8rem;
+    padding-bottom: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.75rem;
     color: var(--text-light);
 }
 
@@ -728,7 +725,7 @@ nav {
 .services-detail-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 60px;
+    gap: 24px;
     align-items: stretch;
 }
 
@@ -739,15 +736,6 @@ nav {
 .services-detail-sticky {
     position: sticky;
     top: 120px;
-}
-
-
-.services-detail-sticky p {
-    font-size: 1rem;
-    font-weight: 300;
-    color: var(--text-light);
-    line-height: 1.7;
-    margin-bottom: 1rem;
 }
 
 .services-detail-middle,
@@ -790,14 +778,6 @@ nav {
     top: 0;
     left: 0;
     will-change: transform;
-}
-
-.services-detail-caption {
-    font-size: 0.9rem;
-    font-weight: 300;
-    color: var(--text-light);
-    line-height: 1.6;
-    margin: 0;
 }
 
 .instudio-services-detail-section {
@@ -879,20 +859,6 @@ nav {
 
 .event-recaps-header-text {
     flex: 1;
-}
-
-.event-recaps-header h2 {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    font-weight: 300;
-    color: var(--text-dark);
-}
-
-.event-recaps-header p {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: var(--text-light);
-    max-width: 600px;
 }
 
 .see-all-link {
@@ -1255,6 +1221,7 @@ nav {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 90vw;
     max-width: 1440px;
     text-align: center;
     padding: 40px;
@@ -1397,6 +1364,7 @@ nav {
     position: relative;
     z-index: 2;
     text-align: center;
+    max-width: 1440px;
 }
 
 .video-grow-title {
@@ -1517,8 +1485,8 @@ nav {
 }
 
 .faq-icon {
-    font-size: 1.5rem;
-    font-weight: 300;
+    font-size: 2rem;
+    font-weight: 200;
     transition: transform 0.3s ease;
     user-select: none;
 }
@@ -1528,19 +1496,11 @@ nav {
     overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     margin: 0;
+    margin-left: -70px;
     padding: 0;
     text-indent: 0;
     line-height: 1.6;
     color: #666;
-}
-
-.faq-answer p {
-    margin: 0;
-    padding: 0;
-    color: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    font-weight: inherit;
 }
 
 .faq-item.active .faq-answer {
@@ -1715,7 +1675,7 @@ nav {
 .service-learn-more {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 0.5rem;
     text-decoration: none;
     color: var(--text-dark);
@@ -1918,6 +1878,7 @@ nav {
     aspect-ratio: 3/4;
     overflow: hidden;
     position: relative;
+    max-height: 90vh;
 }
 
 .about-parallax-img {
@@ -2810,5 +2771,42 @@ h2 .line.animate {
 
     .blog-post-content h3 {
         font-size: 1.3rem;
+    }
+}
+
+/* ============================================
+   Large screen breakpoint (min-width: 1600px)
+   ============================================ */
+@media (min-width: 1600px) {
+
+    /* Header & nav */
+    
+    h1 {
+        font-size: 5rem;
+        line-height: 6.25rem;
+        margin-bottom: 2rem;
+    }
+    
+    h2 {
+        font-size: 3rem;
+        line-height: 4.25rem;
+    }
+    
+    h3 {
+        font-size: 2rem;
+        line-height: 2.25rem;
+        font-family: 'Mazius Display', sans-serif;
+        font-weight: 200;
+        font-style: normal;
+        color: var(--text-dark);
+    }
+    
+    h4 {
+        font-size: 1.5rem;
+        line-height: 1.75rem;
+        font-family: 'Mazius Display', sans-serif;
+        font-weight: 200;
+        font-style: normal;
+        color: var(--text-light);
     }
 }
