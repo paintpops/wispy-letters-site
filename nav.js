@@ -20,5 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('header');
     if (header) {
         header.innerHTML = navHTML;
+
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        header.querySelectorAll('.nav-links a').forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+            }
+        });
     }
 });

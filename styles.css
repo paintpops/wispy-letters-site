@@ -236,7 +236,8 @@ nav {
     font-style: italic;
 }
 
-.nav-links a:hover::after {
+.nav-links a:hover::after,
+.nav-links a.active::after {
     opacity: 1;
 }
 
@@ -635,7 +636,7 @@ nav {
 .services-list-container {
     position: relative;
     z-index: 10;
-    max-width: 1200px;
+    max-width: 50vw;
     width: 100%;
     text-align: center;
 }
