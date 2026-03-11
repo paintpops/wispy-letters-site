@@ -11,89 +11,81 @@
 </head>
 <body>
     <header></header>
-    
-    <section class="innerpage">
-        <div class="innerpage-content">
-             <div class="innerpage-svg-container">
-                <img src="SectionTitles/blog_title.svg" alt="Blog" class="innerpage-svg">
-            </div>
-        </div>
-    </section>
 
     <section class="blog-grid-section">
         <div class="container">
             <div class="blog-grid">
                 <!-- Blog Post 1 -->
-                <a href="blog-post-1.html" class="blog-card">
+                <div class="blog-card">
                     <div class="blog-thumbnail">
-                        <img src="Photos/instudio/Taylor&Porter_L&DWedding_075.jpg" alt="Wedding Calligraphy Tips">
+                        <a href="blog-post-1.html"><img src="Photos/instudio/Taylor&Porter_L&DWedding_075.jpg" alt="Wedding Calligraphy Tips"></a>
                     </div>
                     <div class="blog-card-content">
-                        <h3>5 Tips for Choosing Wedding Calligraphy</h3>
-                        <p class="blog-date">January 15, 2025</p>
-                        <p class="blog-excerpt">Discover essential tips for selecting the perfect calligraphy style for your wedding invitations and day-of details.</p>
+                        <h3><a href="blog-post-1.html">5 Tips for Choosing Wedding Calligraphy</a></h3>
+                        <p>January 15, 2025</p>
+                        <p>Discover essential tips for selecting the perfect calligraphy style for your wedding invitations and day-of details.</p>
                     </div>
-                </a>
+                </div>
 
                 <!-- Blog Post 2 -->
-                <a href="blog-post-2.html" class="blog-card">
+                <div class="blog-card">
                     <div class="blog-thumbnail">
-                        <img src="Photos/instudio/matera-suite02.jpg" alt="Custom Invitation Suite">
+                        <a href="blog-post-2.html"><img src="Photos/instudio/matera-suite02.jpg" alt="Custom Invitation Suite"></a>
                     </div>
                     <div class="blog-card-content">
-                        <h3>Behind the Scenes: Creating a Custom Suite</h3>
+                        <h3><a href="blog-post-2.html">Behind the Scenes: Creating a Custom Suite</a></h3>
                         <p class="blog-date">January 8, 2025</p>
                         <p class="blog-excerpt">Take a look at the process of designing and creating a fully custom calligraphy invitation suite from start to finish.</p>
                     </div>
-                </a>
+                </div>
 
                 <!-- Blog Post 3 -->
-                <a href="blog-post-3.html" class="blog-card">
+                <div class="blog-card">
                     <div class="blog-thumbnail">
-                        <img src="Photos/workshops/brooklyncraftcompany01.jpg" alt="Calligraphy Workshop">
+                        <a href="blog-post-3.html"><img src="Photos/workshops/brooklyncraftcompany01.jpg" alt="Calligraphy Workshop"></a>
                     </div>
                     <div class="blog-card-content">
-                        <h3>Hosting Your First Calligraphy Workshop</h3>
+                        <h3><a href="blog-post-3.html">Hosting Your First Calligraphy Workshop</a></h3>
                         <p class="blog-date">December 22, 2024</p>
                         <p class="blog-excerpt">Learn what it takes to plan and execute a successful calligraphy workshop for beginners and enthusiasts alike.</p>
                     </div>
-                </a>
+                </div>
 
                 <!-- Blog Post 4 -->
-                <a href="blog-post-4.html" class="blog-card">
+                <div class="blog-card">
                     <div class="blog-thumbnail">
-                        <img src="Photos/instudio/placecards01.jpg" alt="Place Cards">
+                        <a href="blog-post-4.html"><img src="Photos/instudio/placecards01.jpg" alt="Place Cards"></a>
                     </div>
                     <div class="blog-card-content">
-                        <h3>The Art of Hand-Lettered Place Cards</h3>
+                        <h3><a href="blog-post-4.html">The Art of Hand-Lettered Place Cards</a></h3>
                         <p class="blog-date">December 10, 2024</p>
                         <p class="blog-excerpt">Explore different styles and techniques for creating beautiful, personalized place cards for your special event.</p>
                     </div>
-                </a>
+                </div>
 
                 <!-- Blog Post 5 -->
-                <a href="blog-post-5.html" class="blog-card">
+                <div class="blog-card">
                     <div class="blog-thumbnail">
-                        <img src="Photos/onsite/gucci-onsite.jpg" alt="On-site Calligraphy">
+                        <a href="blog-post-5.html"><img src="Photos/onsite/gucci-onsite.jpg" alt="On-site Calligraphy"></a>
                     </div>
                     <div class="blog-card-content">
-                        <h3>Corporate Event Calligraphy: What to Expect</h3>
+                        <h3><a href="blog-post-5.html">Corporate Event Calligraphy: What to Expect</a></h3>
                         <p class="blog-date">November 28, 2024</p>
                         <p class="blog-excerpt">Everything you need to know about booking on-site calligraphy services for your corporate event or brand activation.</p>
                     </div>
-                </a>
+                </div>
 
                 <!-- Blog Post 6 -->
-                <a href="blog-post-6.html" class="blog-card">
+                <div class="blog-card">
                     <div class="blog-thumbnail">
-                        <img src="Photos/instudio/branding02.jpg" alt="Calligraphy Branding">
+                        <a href="blog-post-6.html"><img src="Photos/instudio/branding02.jpg" alt="Calligraphy Branding"></a>
                     </div>
                     <div class="blog-card-content">
-                        <h3>Modern Calligraphy for Brand Identity</h3>
+                        <h3><a href="blog-post-6.html">Modern Calligraphy for Brand Identity</a></h3>
                         <p class="blog-date">November 15, 2024</p>
                         <p class="blog-excerpt">How custom calligraphy can elevate your brand and create a memorable, elegant visual identity for your business.</p>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
     </section>
@@ -160,8 +152,7 @@
 
                 // Generate blog cards from JSON data
                 posts.forEach(post => {
-                    const blogCard = document.createElement('a');
-                    blogCard.href = post.url;
+                    const blogCard = document.createElement('div');
                     blogCard.className = 'blog-card';
 
                     blogCard.innerHTML = `
@@ -169,7 +160,7 @@
                             <img src="${post.image}" alt="${post.title}">
                         </div>
                         <div class="blog-card-content">
-                            <h3>${post.title}</h3>
+                            <h3><a href="${post.url}">${post.title}</a></h3>
                             <p class="blog-date">${post.date}</p>
                             <p class="blog-excerpt">${post.excerpt}</p>
                         </div>
