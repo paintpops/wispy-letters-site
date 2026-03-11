@@ -635,7 +635,7 @@ nav {
 .services-list-container {
     position: relative;
     z-index: 10;
-    max-width: 600px;
+    max-width: 1200px;
     width: 100%;
     text-align: center;
 }
@@ -760,12 +760,9 @@ nav {
     margin-top: 95%;
 }
 
-.services-detail-middle .services-detail-item:nth-child(2) {
+.services-detail-middle .services-detail-item:nth-child(n+2),
+.services-detail-right .services-detail-item:nth-child(n+2) {
     margin-top: 50%;
-}
-
-.services-detail-right .services-detail-item:nth-child(2) {
-    margin-top: 60%;
 }
 
 .services-detail-item {
@@ -810,12 +807,16 @@ nav {
     gap: 2rem;
 }
 
-.instudio-services-detail-middle {
+.instudio-services-detail-left {
     margin-top: 250px;
 }
 
-.instudio-services-detail-right {
+.instudio-services-detail-middle {
     margin-top: 500px;
+}
+
+.instudio-services-detail-right {
+    margin-top: 250px;
 }
 
 .instudio-services-detail-left .instudio-services-detail-item:nth-child(2),
@@ -2792,4 +2793,8 @@ h2 .line.animate {
         line-height: 4.25rem;
     }
     
+    p {
+    font-size: 1.25rem;
+    line-height: 2rem;
+}
 }
