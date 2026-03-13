@@ -58,6 +58,25 @@ body {
     transition: background-color 1s ease-out;
 }
 
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url('GlobalAssets/textured-background-black.jpg');
+    background-size: 100% 100%;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: repeat;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: -1;
+    pointer-events: none;
+}
+
+body.contact-visible::after {
+    opacity: 1;
+}
+
 body.bg-dark {
     background-color: var(--text-dark);
 }
@@ -81,7 +100,8 @@ h1 {
 
 h2 {
     font-size: 3rem;
-    line-height: 4.25rem;
+    line-height: 3.75rem;
+    margin-bottom: 1rem;
 }
 
 h3 {
@@ -607,8 +627,8 @@ nav {
 
 .services-list-image-left-1 {
     top: 10%;
-    left: 5vw;
-    max-width: 18vw;
+    left: 2vw;
+    max-width: 22vw;
     height: auto;
 }
 
@@ -620,14 +640,14 @@ nav {
 }
 
 .services-list-image-right-1 {
-    top: 25%;
-    right: 5vw;
-    max-width: 18vw;
+    top: 15%;
+    right: 0vw;
+    max-width: 22vw;
     height: auto;
 }
 
 .services-list-image-right-2 {
-    bottom: 10%;
+    bottom: 20%;
     right: 8vw;
     max-width: 16vw;
     height: auto;
@@ -636,7 +656,7 @@ nav {
 .services-list-container {
     position: relative;
     z-index: 10;
-    max-width: 50vw;
+    max-width: 45vw;
     width: 100%;
     text-align: center;
 }
@@ -737,7 +757,7 @@ nav {
 .services-detail-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 24px;
+    gap: 3%;
     align-items: stretch;
 }
 
@@ -758,7 +778,7 @@ nav {
 }
 
 .services-detail-right {
-    margin-top: 95%;
+    margin-top: 100%;
 }
 
 .services-detail-middle .services-detail-item:nth-child(n+2),
@@ -867,7 +887,6 @@ nav {
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 60px;
-    gap: 40px;
 }
 
 .event-recaps-header-text {
@@ -935,7 +954,7 @@ nav {
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-start;
-    padding: 30px;
+    padding: 24px;
     opacity: 0;
     transition: opacity 0.2s ease;
     text-align: left;
@@ -947,32 +966,14 @@ nav {
 }
 
 .event-recap-overlay h3 {
-    font-size: 1.5rem;
     color: var(--white);
-    margin-bottom: 15px;
-    font-weight: 400;
 }
 
 .event-recap-overlay p {
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.85);
-    line-height: 1.5;
+    color: var(--white);
 }
 
-.event-recap-button {
-    display: inline-block;
-    padding: 12px 30px;
-    background: var(--white);
-    color: var(--primary-color);
-    font-size: 0.9rem;
-    font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: background 0.3s ease, color 0.3s ease;
-}
-
-.event-recap-card:hover .event-recap-button {
-    background: var(--secondary-color);
+.event-recap-overlay .service-learn-more {
     color: var(--white);
 }
 
@@ -2045,20 +2046,8 @@ nav {
 /* Contact Section */
 .contact {
     padding: 100px 20px 0;
-    background: var(--primary-color);
-    border-radius: 2rem 2rem 0 0;
 }
 
-/* Homepage: Contact section fixed at bottom, hidden initially */
-.homepage .contact {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    transform: translateY(100%);
-    will-change: transform;
-}
 
 .contact h2 {
     font-size: 3rem;
@@ -2166,9 +2155,9 @@ nav {
 .submit-button {
     width: 100%;
     padding: 18px;
-    background: var(--secondary-color);
+    background-color: transparent;
     color: var(--white);
-    border: none;
+    border: 1px solid var(--white);
     border-radius: 50px;
     font-family: 'Mazius Display', sans-serif;
     font-weight: 300;
@@ -2179,7 +2168,8 @@ nav {
 }
 
 .submit-button:hover {
-    background: var(--primary-color);
+    background: var(--white);
+    color: var(--text-dark);
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
@@ -2240,7 +2230,7 @@ footer p {
 .testimonials-content {
     display: flex;
     gap: 80px;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
 }
 
@@ -2288,7 +2278,7 @@ footer p {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .testimonial-dot {

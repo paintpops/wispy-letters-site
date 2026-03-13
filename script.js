@@ -397,8 +397,8 @@ window.addEventListener('load', function() {
     d.head.append(s);
 })();
 
-// Contact Section Slide Up (index.html only)
-const contactSection = document.querySelector('#contact.contact');
+// Contact Section Slide Up (disabled)
+const contactSection = null;
 const instagramSection = document.querySelector('.instagram-feed');
 
 if (contactSection) {
@@ -1124,3 +1124,14 @@ if (scrollingImagesSection) {
     });
 }
 
+
+// Fade body background to dark texture when contact section is visible
+const contactEl = document.querySelector('#contact');
+if (contactEl) {
+    const textureObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            document.body.classList.toggle('contact-visible', entry.isIntersecting);
+        });
+    }, { threshold: 0.5 });
+    textureObserver.observe(contactEl);
+}
