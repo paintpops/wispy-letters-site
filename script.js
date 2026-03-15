@@ -509,7 +509,7 @@ if (serviceSections.length > 0) {
     const parallaxStates = [];
 
     serviceSections.forEach((section, index) => {
-        const imageWrapper = section.querySelector('.service-image-wrapper');
+        const imageWrapper = section.querySelector('.service-image-wrapper, .service-image-wrapper-wide');
         const img = imageWrapper ? imageWrapper.querySelector('img') : null;
 
         if (!img || !imageWrapper) return;
@@ -532,7 +532,7 @@ if (serviceSections.length > 0) {
         parallaxStates.forEach((state, index) => {
             if (!serviceSections[index]) return;
 
-            const imageWrapper = serviceSections[index].querySelector('.service-image-wrapper');
+            const imageWrapper = serviceSections[index].querySelector('.service-image-wrapper, .service-image-wrapper-wide');
             const img = imageWrapper ? imageWrapper.querySelector('img') : null;
             if (!img || !imageWrapper) return;
 
