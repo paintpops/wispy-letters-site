@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const navHTML = `
         <nav>
             <ul class="nav-links nav-links-left">
-                <li><a href="instudio.html">In-studio</a></li>
                 <li><a href="onsite.html">On-site</a></li>
+                <li><a href="instudio.html">In-studio</a></li>
                 <li><a href="workshops.html">Workshops</a></li>
             </ul>
             <div class="logo"><a href="index.html"><img src="GlobalAssets/wispyletters_logo.svg" alt="Wispy Letters"></a></div>

@@ -77,6 +77,10 @@ body.contact-visible::after {
     opacity: 1;
 }
 
+body.contact-visible {
+    cursor: url('GlobalAssets/nibcursor-white.svg'), auto;
+}
+
 body.bg-dark {
     background-color: var(--text-dark);
 }
@@ -613,7 +617,7 @@ nav {
 .services-list-image-left-1 {
     top: 10%;
     left: 2vw;
-    max-width: 22vw;
+    max-width: 25vw;
     height: auto;
     z-index: 2;
 }
@@ -641,8 +645,8 @@ nav {
 
 .services-list-image-right-2 {
     bottom: 10%;
-    right: 8vw;
-    max-width: 16vw;
+    right: 5vw;
+    max-width: 22vw;
     height: auto;
 }
 
@@ -656,9 +660,13 @@ nav {
 .services-list-container {
     position: relative;
     z-index: 10;
-    max-width: 45vw;
+    max-width: 40vw;
     width: 100%;
     text-align: center;
+}
+
+.services-list-container h1 {
+    opacity: 0;
 }
 
 .services-list {
@@ -1147,11 +1155,17 @@ nav {
     object-fit: contain;
 }
 
-/* Auto-scrolling Gallery */
+/* Scroll-driven Horizontal Gallery */
 .auto-gallery {
     width: 100%;
-    height: 100vh;
+    /* height set by JS based on track width */
     position: relative;
+}
+
+.auto-gallery-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -1162,7 +1176,7 @@ nav {
     gap: 20px;
     padding: 5vh 20px;
     width: max-content;
-    animation: autoScroll 30s cubic-bezier(0.4, 0.0, 0.6, 1) infinite;
+    will-change: transform;
 }
 
 .auto-gallery-track .gallery-item {
@@ -1178,15 +1192,6 @@ nav {
     width: auto;
     height: 100%;
     object-fit: contain;
-}
-
-@keyframes autoScroll {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
 }
 
 /* Intro Section */
@@ -2140,6 +2145,22 @@ nav {
 .contact-form {
     width: 100%;
     margin-top: 20px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.form-label {
+    display: block;
+    font-family: 'Mazius Display', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--white);
+    margin-bottom: 8px;
+    opacity: 0.7;
 }
 
 .form-row {

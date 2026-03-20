@@ -136,6 +136,43 @@ if (introGallery) {
     });
 }
 
+// Auto Gallery - Scroll-driven Horizontal Scroll
+const autoGallerySection = document.querySelector('.auto-gallery');
+const autoGalleryTrack = document.querySelector('.auto-gallery-track');
+
+if (autoGallerySection && autoGalleryTrack) {
+    let autoGalleryCurrentX = 0;
+    let autoGalleryTargetX = 0;
+    let autoGalleryRafId = null;
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function updateAutoGalleryHeight() {
+        const trackWidth = autoGalleryTrack.scrollWidth;
+        const maxScroll = Math.max(0, trackWidth - window.innerWidth);
+        autoGallerySection.style.height = `${maxScroll + window.innerHeight}px`;
+    }
+
+    function animateAutoGallery() {
+        autoGalleryCurrentX = lerp(autoGalleryCurrentX, autoGalleryTargetX, 0.1);
+        autoGalleryTrack.style.transform = `translateX(${-autoGalleryCurrentX}px)`;
+        autoGalleryRafId = requestAnimationFrame(animateAutoGallery);
+    }
+
+    function onAutoGalleryScroll() {
+        const trackWidth = autoGalleryTrack.scrollWidth;
+        const maxScroll = Math.max(0, trackWidth - window.innerWidth);
+        const sectionTop = autoGallerySection.getBoundingClientRect().top + window.pageYOffset;
+        const scrollPast = window.pageYOffset - sectionTop;
+        autoGalleryTargetX = Math.max(0, Math.min(maxScroll, scrollPast));
+    }
+
+    updateAutoGalleryHeight();
+    window.addEventListener('resize', updateAutoGalleryHeight);
+    window.addEventListener('scroll', onAutoGalleryScroll, { passive: true });
+    animateAutoGallery();
+}
+
 // Intro Section - Image Float and Text Fade
 const introSection = document.querySelector('.intro');
 if (introSection) {
@@ -383,7 +420,10 @@ window.addEventListener('load', function() {
         });
 
         h1Elements.forEach(h1 => {
-            if (h1 !== introH2) h2Observer.observe(h1);
+            if (h1 !== introH2) {
+                h1.style.opacity = '1';
+                h2Observer.observe(h1);
+            }
         });
     }, 100);
 });
@@ -956,8 +996,11 @@ if (servicesListSection) {
         listObserver.observe(item);
     });
 
-    window.addEventListener('scroll', function() {
-        const scrollY = window.pageYOffset;
+    const listCurrentY = new Array(servicesListImages.length).fill(0);
+    const listTargetY = new Array(servicesListImages.length).fill(0);
+
+    function updateServicesListTargets() {
+        const scrollY = window.scrollY;
         const sectionTop = servicesListSection.offsetTop;
         const sectionHeight = servicesListSection.offsetHeight;
         const viewportHeight = window.innerHeight;
@@ -973,11 +1016,21 @@ if (servicesListSection) {
                 else if (index === 2) direction = -1;
                 else direction = 1;
 
-                const translateY = direction * scrollProgress * 200;
-                image.style.transform = `translateY(${translateY}px)`;
+                listTargetY[index] = direction * scrollProgress * 80;
             });
         }
-    });
+    }
+
+    function animateServicesList() {
+        updateServicesListTargets();
+        servicesListImages.forEach((image, index) => {
+            listCurrentY[index] += (listTargetY[index] - listCurrentY[index]) * 0.1;
+            image.style.transform = `translateY(${listCurrentY[index]}px)`;
+        });
+        requestAnimationFrame(animateServicesList);
+    }
+
+    animateServicesList();
 }
 
 
@@ -1125,13 +1178,4 @@ if (scrollingImagesSection) {
 }
 
 
-// Fade body background to dark texture when contact section is visible
-const contactEl = document.querySelector('#contact');
-if (contactEl) {
-    const textureObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            document.body.classList.toggle('contact-visible', entry.isIntersecting);
-        });
-    }, { threshold: 0.5 });
-    textureObserver.observe(contactEl);
-}
+
