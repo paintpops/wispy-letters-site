@@ -1482,7 +1482,7 @@ nav {
 
 .service-image-wrapper-wide {
     flex: 0 0 55%;
-    aspect-ratio: 16/9;
+    aspect-ratio: 16/12;
     position: relative;
     overflow: hidden;
     transform: translateZ(0);
@@ -2266,6 +2266,7 @@ footer p {
     padding: 120px 0;
     background: transparent;
     width: 100vw;
+    min-height: 900px;
 }
 
 .testimonials-container {
@@ -2615,8 +2616,9 @@ h2 .line.animate {
 /* Blog Grid Section */
 .blog-grid-section {
     padding: 80px 20px 120px;
-    margin-top: 24px;
+    margin: 48px auto 0;
     background: transparent;
+    max-width: 1440px;
 }
 
 .blog-grid {
@@ -2640,10 +2642,8 @@ h2 .line.animate {
 .blog-card {
     display: block;
     text-decoration: none;
-    background: rgba(255, 255, 255, 0.02);
     overflow: hidden;
     transition: all 0.4s ease;
-    border: 1px solid rgba(255, 255, 255, 0.05);
     animation: fadeUp 0.6s ease both;
 }
 
