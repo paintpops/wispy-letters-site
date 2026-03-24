@@ -1910,16 +1910,15 @@ nav {
 .about-left {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
 }
 
-.about-svg {
-    max-width: 100%;
+.about-left > img {
+    align-self: flex-start;
 }
 
 .about-description {
     margin-left: 25%;
-    margin-top: 10%;
 }
 
 .about-content {
