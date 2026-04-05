@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <select id="contact-service" required>
                                     <option value="">Select a Service</option>
                                     <option value="event-calligraphy">Live event calligraphy / engraving</option>
-                                    <option value="dayof-items">Day-of items (envelopes, place cards, etc)</option>
-                                    <option value="custom-commission">Custom commission / engraving</option>
+                                    <option value="custom-commission">Custom commission / gifting</option>
                                     <option value="workshops">Workshops</option>
+                                    <option value="other">Other</option>
                                 </select>
                             </div>
                         </div>
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <label class="form-label">How did you hear about Wispy Letters?*</label>
                                 <select class="referral-select" required>
                                     <option value="">Select an option</option>
-                                    <option value="google">Google</option>
+                                    <option value="search-engine">Google / search engine</option>
                                     <option value="referral">Word of mouth / referral</option>
                                     <option value="instagram">Instagram</option>
                                     <option value="other">Other</option>

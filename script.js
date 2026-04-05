@@ -174,6 +174,9 @@ if (autoGallerySection && autoGalleryTrack) {
 }
 
 // Intro Section - Image Float and Text Fade
+let introAnimated = false;
+let introAnimateFn = null;
+
 const introSection = document.querySelector('.intro');
 if (introSection) {
     const introImages = document.querySelectorAll('.intro-image');
@@ -184,6 +187,13 @@ if (introSection) {
         const sectionHeight = introSection.offsetHeight;
         const viewportHeight = window.innerHeight;
 
+        // Hide when section hasn't reached viewport top yet (auto-gallery still visible)
+        if (sectionRect.top > 0) {
+            introImages.forEach(image => { image.style.opacity = 0; });
+            introContent.style.opacity = 0;
+            return;
+        }
+
         const sectionEnded = sectionRect.bottom <= viewportHeight;
 
         if (sectionEnded) {
@@ -192,6 +202,12 @@ if (introSection) {
             });
             introContent.style.opacity = 0;
             return;
+        }
+
+        // Trigger entry animation once when section first reaches viewport top
+        if (!introAnimated) {
+            introAnimated = true;
+            if (introAnimateFn) introAnimateFn();
         }
 
         // Calculate scroll progress based on intro section position
@@ -369,13 +385,12 @@ window.addEventListener('load', function() {
 
         if (introH2) {
             wrapWordsInSpans(introH2);
-            // Animate intro text immediately on page load
-            const introContentEl = document.querySelector('.intro-content');
-            if (introContentEl) introContentEl.style.opacity = '1';
-            introH2.querySelectorAll('span').forEach(word => {
-                word.style.animation = `slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
-                word.style.animationDelay = word.getAttribute('data-animation-delay');
-            });
+            introAnimateFn = () => {
+                introH2.querySelectorAll('span').forEach(word => {
+                    word.style.animation = `slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
+                    word.style.animationDelay = word.getAttribute('data-animation-delay');
+                });
+            };
         }
 
         const h1Elements = document.querySelectorAll('h1');
@@ -416,12 +431,14 @@ window.addEventListener('load', function() {
         const heroEl = document.querySelector('.hero');
         const heroSvgLeft = document.querySelector('.hero-svg-left');
         const heroSvgRight = document.querySelector('.hero-svg-right');
+        const heroH3 = document.querySelector('.hero-svg-container h3');
         if (heroEl && heroSvgLeft && heroSvgRight) {
             const heroObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         heroSvgLeft.classList.add('animate');
                         heroSvgRight.classList.add('animate');
+                        if (heroH3) heroH3.classList.add('animate');
                         heroObserver.disconnect();
                     }
                 });
