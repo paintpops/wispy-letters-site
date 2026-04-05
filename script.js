@@ -178,23 +178,15 @@ const introSection = document.querySelector('.intro');
 if (introSection) {
     const introImages = document.querySelectorAll('.intro-image');
     const introContent = document.querySelector('.intro-content');
-    const introH2 = introContent.querySelector('h1');
-    let wordAnimationTriggered = false;
 
     window.addEventListener('scroll', function() {
         const sectionRect = introSection.getBoundingClientRect();
         const sectionHeight = introSection.offsetHeight;
         const viewportHeight = window.innerHeight;
 
-        // Check if auto-gallery is 60% out of view
-        const gallery = document.querySelector('.auto-gallery');
-        const galleryRect = gallery ? gallery.getBoundingClientRect() : null;
-        const galleryExitProgress = galleryRect ? 1 - (galleryRect.bottom / viewportHeight) : 0;
-        const sectionStarted = galleryExitProgress >= 0.6;
         const sectionEnded = sectionRect.bottom <= viewportHeight;
 
-        if (!sectionStarted || sectionEnded) {
-            // Hide images and text when section hasn't started or has ended
+        if (sectionEnded) {
             introImages.forEach(image => {
                 image.style.opacity = 0;
             });
@@ -205,19 +197,6 @@ if (introSection) {
         // Calculate scroll progress based on intro section position
         // Progress goes from 0 (when started) to 1 (when section ends)
         const scrollProgress = Math.max(0, Math.min(1, -sectionRect.top / (sectionHeight - viewportHeight)));
-
-        // Trigger word animation when section first becomes visible and spans are ready
-        if (!wordAnimationTriggered && scrollProgress > 0) {
-            const words = introH2.querySelectorAll('span');
-            if (words.length > 0) {
-                wordAnimationTriggered = true;
-                words.forEach(word => {
-                    const delay = word.getAttribute('data-animation-delay');
-                    word.style.animation = `slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
-                    word.style.animationDelay = delay;
-                });
-            }
-        }
 
         // Phase 1: Images move vertically (first 50% of scroll)
         if (scrollProgress <= 0.5) {
@@ -390,6 +369,13 @@ window.addEventListener('load', function() {
 
         if (introH2) {
             wrapWordsInSpans(introH2);
+            // Animate intro text immediately on page load
+            const introContentEl = document.querySelector('.intro-content');
+            if (introContentEl) introContentEl.style.opacity = '1';
+            introH2.querySelectorAll('span').forEach(word => {
+                word.style.animation = `slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
+                word.style.animationDelay = word.getAttribute('data-animation-delay');
+            });
         }
 
         const h1Elements = document.querySelectorAll('h1');
@@ -425,6 +411,23 @@ window.addEventListener('load', function() {
                 h2Observer.observe(h1);
             }
         });
+
+        // Hero SVGs: animate on scroll into view
+        const heroEl = document.querySelector('.hero');
+        const heroSvgLeft = document.querySelector('.hero-svg-left');
+        const heroSvgRight = document.querySelector('.hero-svg-right');
+        if (heroEl && heroSvgLeft && heroSvgRight) {
+            const heroObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        heroSvgLeft.classList.add('animate');
+                        heroSvgRight.classList.add('animate');
+                        heroObserver.disconnect();
+                    }
+                });
+            }, { threshold: 0.3 });
+            heroObserver.observe(heroEl);
+        }
     }, 100);
 });
 

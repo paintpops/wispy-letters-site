@@ -303,19 +303,24 @@ nav {
     max-width: 1024px;
     height: auto;
     opacity: 0;
-    animation: fadeUp 1s ease-out forwards;
 }
 
 .hero-svg-left {
-    animation-delay: 0s;
-    animation-name: fadeUpLeft;
-    transform: translateX(-3rem);
+    transform: translateY(80px) translateX(-3rem);
+    filter: blur(8px);
 }
 
 .hero-svg-right {
-    animation-delay: 0.3s;
-    animation-name: fadeUpRight;
-    transform: translateX(3rem);
+    transform: translateY(80px) translateX(3rem);
+    filter: blur(8px);
+}
+
+.hero-svg-left.animate {
+    animation: fadeUpLeft 1s ease-out forwards;
+}
+
+.hero-svg-right.animate {
+    animation: fadeUpRight 1s ease-out 0.3s forwards;
 }
 
 @keyframes fadeUpLeft {
