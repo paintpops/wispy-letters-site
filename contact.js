@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <select id="contact-service" required>
                                     <option value="">Select a Service</option>
                                     <option value="event-calligraphy">Live event calligraphy / engraving</option>
-                                    <option value="custom-commission">Custom commission / gifting</option>
+                                    <option value="custom-commission">Custom commissions / gifting</option>
                                     <option value="workshops">Workshops</option>
                                     <option value="other">Other</option>
                                 </select>
