@@ -2821,11 +2821,12 @@ body.nav-open .nav-drawer {
 
     h2 {
         font-size: 2rem;
+        line-height: 2.75rem;
     }
 
     h3 {
         font-size: 1.75rem;
-        line-height: 1.75rem;
+        line-height: 2.25rem;
     }
 
     h4 {
@@ -3348,7 +3349,7 @@ body.nav-open .nav-drawer {
 
     h2 {
         font-size: 2rem;
-        line-height: 2.5rem;
+        line-height: 3rem;
     }
 
     .tagline {
