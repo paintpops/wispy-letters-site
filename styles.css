@@ -766,7 +766,7 @@ nav {
 /* Event Recaps Section */
 /* Services Detail Section */
 .services-detail-section {
-    margin: 2rem;
+    margin: 1rem;
 }
 
 .services-detail-container {
@@ -1476,6 +1476,45 @@ nav {
 .service-section-static .service-content {
     position: static;
     transform: none;
+}
+
+/* FAQ Section (onsite.html / instudio.html) */
+.faq-section {
+    min-height: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    padding: 100px 20px;
+}
+
+.faq-container {
+    width: 80vw;
+    max-width: 1400px;
+    display: flex;
+    align-items: flex-start;
+    gap: 5rem;
+    padding-top: 20vh;
+}
+
+.faq-content {
+    flex: 1;
+    position: static;
+    align-self: flex-start;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+}
+
+.faq-content img {
+    max-height: 8rem;
+    width: auto;
+    margin-bottom: -25px;
+    margin-left: -3vw;
+}
+
+.faq-content p {
+    margin-left: 5vw;
 }
 
 /* FAQ Accordion */
@@ -2420,7 +2459,7 @@ h2 .line.animate {
 
 /* Portfolio Masonry Gallery */
 .portfolio-masonry {
-    padding: 100px 20px;
+    padding: 100px 16px;
     background: transparent;
 }
 
@@ -2750,6 +2789,7 @@ body.nav-open .nav-drawer {
     body,
     body::after {
         background-attachment: scroll;
+        background-size: auto 100vh;
     }
 
     /* --- Navigation --- */
@@ -2758,7 +2798,7 @@ body.nav-open .nav-drawer {
         justify-content: space-between;
         align-items: center;
         gap: 0;
-        padding: 16px 20px;
+        padding: 16px 1rem;
     }
 
     .nav-links-left,
@@ -2775,13 +2815,21 @@ body.nav-open .nav-drawer {
     }
 
     /* --- Typography --- */
+    h1 {
+        line-height: 2.8rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
     h3 {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
         line-height: 1.75rem;
     }
 
     h4 {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         line-height: 1.5rem;
     }
 
@@ -2798,6 +2846,10 @@ body.nav-open .nav-drawer {
     }
 
     /* --- Hero Section --- */
+    .hero {
+        padding: 0 1rem 0 1rem;
+    }
+
     .hero-svg {
         width: 90vw;
     }
@@ -2821,35 +2873,11 @@ body.nav-open .nav-drawer {
     }
 
     /* --- Auto Gallery — disable JS horizontal scroll, show as 2-col grid --- */
-    .auto-gallery {
-        height: auto !important;
-    }
-
-    .auto-gallery-sticky {
-        position: static;
-        height: auto;
-        overflow: visible;
-    }
-
-    .auto-gallery-track {
-        flex-wrap: wrap;
-        width: 100%;
-        justify-content: center;
-        gap: 4px;
-        padding: 16px;
-        transform: none !important;
-        will-change: auto;
-    }
-
-    .auto-gallery-track .gallery-item {
-        height: 44vw;
-        width: calc(50% - 4px);
-    }
 
     /* --- Intro Section — disable fixed parallax layout --- */
     .intro {
         min-height: auto;
-        padding: 80px 20px 60px;
+        padding: 80px 1rem 60px 1rem;
         overflow: visible;
     }
 
@@ -2869,7 +2897,7 @@ body.nav-open .nav-drawer {
 
     /* --- Service Sections (homepage) --- */
     .service-section {
-        padding: 60px 20px;
+        padding: 60px 1rem;
         min-height: auto;
     }
 
@@ -2885,7 +2913,13 @@ body.nav-open .nav-drawer {
         transform: none;
     }
 
+    .service-content img {
+        height: 6rem;
+        padding-left: 1rem;
+    }
+
     .service-image-wrapper {
+        order: -1;
         flex: none;
         width: 100%;
         aspect-ratio: 4/3;
@@ -2898,6 +2932,7 @@ body.nav-open .nav-drawer {
     }
 
     .service-image-wrapper-wide {
+        order: -1;
         flex: none;
         width: 100%;
         aspect-ratio: 16/10;
@@ -2909,43 +2944,82 @@ body.nav-open .nav-drawer {
         transform: none !important;
     }
 
+    /* --- FAQ Section --- */
+    .faq-section {
+        margin-top: 15rem;
+    }
+
     /* --- Services List Section (inner pages top hero) --- */
     .services-list-section {
         flex-direction: column;
-        padding: 100px 20px 60px;
+        padding: 100px 1rem 60px;
         min-height: auto;
         gap: 2rem;
-        align-items: flex-start;
+        align-items: center;
     }
 
     .services-list-images {
-        position: static;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 6px;
+        position: relative;
+        display: block;
         width: 100%;
-        height: auto;
+        height: 70vw;
+        overflow: hidden;
         pointer-events: auto;
     }
 
     .services-list-image {
-        position: static;
-        max-width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        height: 38vw;
+        height: 100%;
+        max-width: 100%;
         object-fit: cover;
-        opacity: 1;
+        opacity: 0;
         transform: none !important;
+        transition: opacity 0.5s ease;
+    }
+
+    .services-list-image.carousel-active {
+        opacity: 1;
     }
 
     .services-list-image-left-3,
     .services-list-image-right-3 {
-        display: none;
+        display: block;
+    }
+
+    .carousel-dots {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        z-index: 10;
+    }
+
+    .carousel-dot {
+        width: 18px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.45);
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        transition: width 0.3s ease, background-color 0.3s ease;
+    }
+
+    .carousel-dot.active {
+        width: 30px;
+        background-color: rgba(255, 255, 255, 0.95);
     }
 
     .services-list-container {
         max-width: 100%;
-        text-align: left;
+        text-align: center;
         z-index: auto;
     }
 
@@ -2987,7 +3061,7 @@ body.nav-open .nav-drawer {
 
     /* --- Inner Page Hero Title Section --- */
     .hero-title-section {
-        padding: 60px 24px;
+        padding: 60px 1rem;
         min-height: auto;
     }
 
@@ -2998,7 +3072,7 @@ body.nav-open .nav-drawer {
 
     /* --- Testimonials --- */
     .testimonials-section {
-        padding: 80px 20px;
+        padding: 80px 1rem;
         min-height: auto;
     }
 
@@ -3022,7 +3096,7 @@ body.nav-open .nav-drawer {
 
     /* --- About page (about.html) --- */
     .about-wrapper {
-        padding: 80px 20px 0;
+        padding: 80px 1rem 0;
     }
 
     .about-display {
@@ -3067,7 +3141,7 @@ body.nav-open .nav-drawer {
 
     /* --- Instagram section --- */
     .instagram-feed {
-        padding: 60px 20px 120px;
+        padding: 60px 1rem 120px;
     }
 
     /* --- innerpage layout --- */
@@ -3076,23 +3150,31 @@ body.nav-open .nav-drawer {
         gap: 8vh;
     }
 
+    .innerpage-svg {
+        max-height: 7rem;
+    }
+
     /* --- Service section static FAQ layout --- */
     .service-section-static .service-container {
         flex-direction: column;
         gap: 2rem;
     }
 
-    /* --- Typography --- */
-    h1 {
-        font-size: 2.8rem;
+    /* --- FAQ Section (onsite / instudio) --- */
+    .faq-section {
+        padding: 60px 1rem;
     }
 
-    h2 {
-        font-size: 1.5rem;
+    .faq-container {
+        flex-direction: column;
+        width: 100%;
+        padding-top: 0;
+        gap: 2rem;
     }
 
-    .tagline {
-        font-size: 1.1rem;
+    .faq-content img {
+        height: 6rem;
+        padding-left: 1rem;
     }
 
     /* --- Services grid --- */
@@ -3225,23 +3307,48 @@ body.nav-open .nav-drawer {
         gap: 20px;
         text-align: center;
     }
+
+    /* --- Global 1rem horizontal padding --- */
+    .about,
+    .blog-grid-section,
+    .blog-post,
+    .clients,
+    .contact,
+    .container,
+    .illustrations,
+    .portfolio,
+    .portfolio-masonry,
+    .scrolling-images-section,
+    .service-details,
+    .services {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
 }
 
 /* Small mobile (max-width: 576px) */
 @media (max-width: 576px) {
     .masonry-grid {
         column-count: 1;
+        column-gap: 0;
+    }
+
+    .container {
+        padding: 0;
     }
 }
 
 /* Extra small (max-width: 480px) */
 @media (max-width: 480px) {
     h1 {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
+        line-height: 3.25rem;
     }
 
     h2 {
-        font-size: 1.3rem;
+        font-size: 2rem;
+        line-height: 2.5rem;
     }
 
     .tagline {

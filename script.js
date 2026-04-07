@@ -167,12 +167,10 @@ if (autoGallerySection && autoGalleryTrack) {
         autoGalleryTargetX = Math.max(0, Math.min(maxScroll, scrollPast));
     }
 
-    if (window.innerWidth > 768) {
-        updateAutoGalleryHeight();
-        window.addEventListener('resize', updateAutoGalleryHeight);
-        window.addEventListener('scroll', onAutoGalleryScroll, { passive: true });
-        animateAutoGallery();
-    }
+    updateAutoGalleryHeight();
+    window.addEventListener('resize', updateAutoGalleryHeight);
+    window.addEventListener('scroll', onAutoGalleryScroll, { passive: true });
+    animateAutoGallery();
 }
 
 // Intro Section - Image Float and Text Fade
@@ -1015,9 +1013,11 @@ if (servicesListSection) {
     const servicesListItems = document.querySelectorAll('.services-list-item');
 
     window.addEventListener('load', function() {
-        servicesListImages.forEach(image => {
-            image.style.opacity = 1;
-        });
+        if (window.innerWidth > 768) {
+            servicesListImages.forEach(image => {
+                image.style.opacity = 1;
+            });
+        }
     });
 
     const listObserver = new IntersectionObserver((entries) => {
@@ -1217,5 +1217,34 @@ if (scrollingImagesSection) {
     });
 }
 
+// Services list image carousel (mobile only)
+if (window.innerWidth <= 768) {
+    document.querySelectorAll('.services-list-images').forEach(container => {
+        const images = Array.from(container.querySelectorAll('.services-list-image'));
+        if (images.length <= 1) return;
 
+        let current = 0;
+        images[0].classList.add('carousel-active');
+
+        const dotsEl = document.createElement('div');
+        dotsEl.className = 'carousel-dots';
+        images.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', () => goTo(i));
+            dotsEl.appendChild(dot);
+        });
+        container.appendChild(dotsEl);
+
+        function goTo(index) {
+            images[current].classList.remove('carousel-active');
+            dotsEl.children[current].classList.remove('active');
+            current = index;
+            images[current].classList.add('carousel-active');
+            dotsEl.children[current].classList.add('active');
+        }
+
+        setInterval(() => goTo((current + 1) % images.length), 3000);
+    });
+}
 
