@@ -47,7 +47,6 @@ body {
     font-weight: 200;
     color: var(--text-dark);
     line-height: 1.6;
-    overflow-x: hidden;
     cursor: url('GlobalAssets/nibcursor.svg'), auto;
     background-color: #f3f1ec;
     background-image: url('GlobalAssets/textured-background.jpg');
@@ -2409,6 +2408,7 @@ footer p {
 /* Smooth Scrolling */
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 /* H2 Line-by-Line Animation */
@@ -2772,14 +2772,6 @@ body.nav-open .nav-drawer {
     body::after {
         background-attachment: scroll;
         background-size: auto 100vh;
-    }
-
-    /* overflow-x: hidden on body breaks position:fixed in mobile Safari —
-       switch body::after to position:absolute so the dark contact overlay still works */
-    body::after {
-        position: absolute;
-        min-height: 100%;
-        width: 100%;
     }
 
     /* --- Navigation --- */
