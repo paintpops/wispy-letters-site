@@ -167,10 +167,12 @@ if (autoGallerySection && autoGalleryTrack) {
         autoGalleryTargetX = Math.max(0, Math.min(maxScroll, scrollPast));
     }
 
-    updateAutoGalleryHeight();
-    window.addEventListener('resize', updateAutoGalleryHeight);
-    window.addEventListener('scroll', onAutoGalleryScroll, { passive: true });
-    animateAutoGallery();
+    if (window.innerWidth > 768) {
+        updateAutoGalleryHeight();
+        window.addEventListener('resize', updateAutoGalleryHeight);
+        window.addEventListener('scroll', onAutoGalleryScroll, { passive: true });
+        animateAutoGallery();
+    }
 }
 
 // Intro Section - Image Float and Text Fade
@@ -182,6 +184,10 @@ if (introSection) {
     const introImages = document.querySelectorAll('.intro-image');
     const introContent = document.querySelector('.intro-content');
 
+    if (window.innerWidth <= 768) {
+        // On mobile the intro is a static section — content stays visible, no parallax
+        if (introContent) introContent.style.opacity = '1';
+    } else {
     window.addEventListener('scroll', function() {
         const sectionRect = introSection.getBoundingClientRect();
         const sectionHeight = introSection.offsetHeight;
@@ -270,6 +276,7 @@ if (introSection) {
             introContent.style.opacity = opacity;
         }
     });
+    } // end else (desktop only)
 }
 
 // Expand video on scroll from center, then fade up with blur
@@ -391,6 +398,19 @@ window.addEventListener('load', function() {
                     word.style.animationDelay = word.getAttribute('data-animation-delay');
                 });
             };
+
+            // On mobile the scroll handler is disabled — use IntersectionObserver instead
+            if (window.innerWidth <= 768) {
+                const mobileIntroObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && introAnimateFn) {
+                            introAnimateFn();
+                            mobileIntroObserver.disconnect();
+                        }
+                    });
+                }, { threshold: 0.1 });
+                mobileIntroObserver.observe(introH2);
+            }
         }
 
         const h1Elements = document.querySelectorAll('h1');
@@ -564,7 +584,7 @@ if (contactSection) {
 // Service Section Parallax Effect (instudio.html)
 const serviceSections = document.querySelectorAll('.service-section');
 
-if (serviceSections.length > 0) {
+if (serviceSections.length > 0 && window.innerWidth > 768) {
     // Track current and target positions for both container and image
     const parallaxStates = [];
 
