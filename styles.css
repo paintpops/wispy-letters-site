@@ -765,7 +765,7 @@ nav {
 /* Event Recaps Section */
 /* Services Detail Section */
 .services-detail-section {
-    margin: 1rem;
+    margin: 2rem;
 }
 
 .services-detail-container {
@@ -3313,6 +3313,7 @@ body.nav-open .nav-drawer {
     .portfolio,
     .portfolio-masonry,
     .scrolling-images-section,
+    .services-detail-section,
     .service-details,
     .services {
         padding-left: 1rem;
