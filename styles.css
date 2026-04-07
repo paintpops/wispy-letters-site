@@ -2300,42 +2300,24 @@ footer p {
 .testimonials-controls {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 6px;
     align-items: flex-start;
 }
 
 .testimonial-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--text-dark);
+    width: 4px;
+    height: 18px;
+    border-radius: 2px;
+    background: rgba(0, 0, 0, 0.2);
     border: none;
     cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease;
     padding: 0;
+    transition: height 0.3s ease, background-color 0.3s ease;
 }
 
-.testimonial-dot::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 20px;
-    height: 20px;
-    border: 1px solid var(--text-dark);
-    border-radius: 50%;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.testimonial-dot.active::before {
-    opacity: 1;
-}
-
-.testimonial-dot:hover {
-    transform: scale(1.2);
+.testimonial-dot.active {
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.75);
 }
 
 /* Grid Gallery Section */
@@ -3093,6 +3075,17 @@ body.nav-open .nav-drawer {
 
     .testimonials-controls {
         flex-direction: row;
+    }
+
+    .testimonial-dot {
+        width: 18px;
+        height: 4px;
+        transition: width 0.3s ease, background-color 0.3s ease;
+    }
+
+    .testimonial-dot.active {
+        width: 30px;
+        height: 4px;
     }
 
     /* --- About page (about.html) --- */
