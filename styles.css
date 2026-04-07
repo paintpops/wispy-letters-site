@@ -2774,6 +2774,14 @@ body.nav-open .nav-drawer {
         background-size: auto 100vh;
     }
 
+    /* overflow-x: hidden on body breaks position:fixed in mobile Safari —
+       switch body::after to position:absolute so the dark contact overlay still works */
+    body::after {
+        position: absolute;
+        min-height: 100%;
+        width: 100%;
+    }
+
     /* --- Navigation --- */
     nav {
         display: flex;

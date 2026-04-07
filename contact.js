@@ -87,11 +87,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const contactEl = document.querySelector('#contact');
         if (contactEl) {
+            const isMobile = window.innerWidth <= 768;
             const textureObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     document.body.classList.toggle('contact-visible', entry.isIntersecting);
                 });
-            }, { threshold: 0.5 });
+            }, { threshold: isMobile ? 0.1 : 0.5 });
             textureObserver.observe(contactEl);
         }
     }
