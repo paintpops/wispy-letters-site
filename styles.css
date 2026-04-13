@@ -42,11 +42,65 @@
     --text-light: #666666;
 }
 
+/* ============================================
+   ANNOUNCEMENT BANNER
+   ============================================ */
+#announcement-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+    background-color: #000;
+    color: #fff;
+    padding: 0.5rem;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+#announcement-banner p {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: #fff;
+    padding: 0 2rem;
+}
+
+#announcement-banner a {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+#announcement-banner a:hover {
+    opacity: 0.75;
+}
+
+#banner-dismiss {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: 0.25rem;
+    opacity: 0.8;
+}
+
+#banner-dismiss:hover {
+    opacity: 1;
+}
+
 body {
     font-family: 'Sentient', sans-serif;
     font-weight: 200;
     color: var(--text-dark);
     line-height: 1.6;
+    padding-top: var(--banner-height, 0px);
     cursor: url('GlobalAssets/nibcursor.svg'), auto;
     background-color: #f3f1ec;
     background-image: url('GlobalAssets/textured-background.jpg');
@@ -162,7 +216,7 @@ p a:hover {
 /* Header & Navigation */
 header {
     position: fixed;
-    top: 0;
+    top: var(--banner-height, 0px);
     width: 100%;
     background: transparent;
     backdrop-filter: none;
@@ -2669,7 +2723,7 @@ body.nav-open .hamburger-btn span:nth-child(3) {
 
 .nav-drawer {
     position: fixed;
-    top: 0;
+    top: var(--banner-height, 0px);
     right: 0;
     width: 100vw;
     height: 100vh;
