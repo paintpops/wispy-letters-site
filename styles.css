@@ -100,6 +100,7 @@ body {
     font-weight: 200;
     color: var(--text-dark);
     line-height: 1.6;
+    overflow-x: clip;
     padding-top: var(--banner-height, 0px);
     cursor: url('GlobalAssets/nibcursor.svg'), auto;
     background-color: #f3f1ec;
