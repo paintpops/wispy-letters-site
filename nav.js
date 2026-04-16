@@ -1,32 +1,34 @@
 // Shared navigation component
 document.addEventListener('DOMContentLoaded', function() {
+    const basePath = window.location.pathname.includes('/blog-posts/') ? '../' : '';
+
     const navHTML = `
         <nav>
             <ul class="nav-links nav-links-left">
-                <li><a href="onsite.html">On-site</a></li>
-                <li><a href="instudio.html">In-studio</a></li>
-                <li><a href="workshops.html">Workshops</a></li>
+                <li><a href="${basePath}onsite.html">On-site</a></li>
+                <li><a href="${basePath}instudio.html">In-studio</a></li>
+                <li><a href="${basePath}workshops.html">Workshops</a></li>
             </ul>
-            <div class="logo"><a href="index.html"><img src="GlobalAssets/wispyletters_logo.svg" alt="Wispy Letters"></a></div>
+            <div class="logo"><a href="${basePath}index.html"><img src="${basePath}GlobalAssets/wispyletters_logo.svg" alt="Wispy Letters"></a></div>
             <ul class="nav-links nav-links-right">
-                <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="about.html">About</a></li>
-                <!--<li><a href="blog.html">Blog</a></li>-->
+                <li><a href="${basePath}portfolio.html">Portfolio</a></li>
+                <li><a href="${basePath}about.html">About</a></li>
+                <li><a href="${basePath}blog.html">Blog</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
             <button class="hamburger-btn" aria-label="Toggle navigation" aria-expanded="false">
-                <span></span>
                 <span></span>
                 <span></span>
             </button>
         </nav>
         <div class="nav-drawer" aria-hidden="true">
             <ul class="nav-drawer-links">
-                <li><a href="onsite.html">On-site</a></li>
-                <li><a href="instudio.html">In-studio</a></li>
-                <li><a href="workshops.html">Workshops</a></li>
-                <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="${basePath}onsite.html">On-site</a></li>
+                <li><a href="${basePath}instudio.html">In-studio</a></li>
+                <li><a href="${basePath}workshops.html">Workshops</a></li>
+                <li><a href="${basePath}portfolio.html">Portfolio</a></li>
+                <li><a href="${basePath}about.html">About</a></li>
+                <li><a href="${basePath}blog.html">Blog</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>

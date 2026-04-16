@@ -977,73 +977,55 @@ nav {
 }
 
 .event-recaps-grid {
-    display: flex;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
     width: 100%;
-    height: 400px;
 }
 
 .event-recap-card {
-    position: relative;
-    flex: 1 1 0;
-    height: 100%;
-    overflow: hidden;
-    display: block;
+    display: flex;
+    flex-direction: column;
     text-decoration: none;
     cursor: pointer;
-    transition: flex 0.3s ease;
+    transition: all 0.4s ease;
 }
 
-.event-recap-card:hover {
-    flex: 1.0;
-}
-
-.event-recaps-grid:has(.event-recap-card:hover) .event-recap-card:not(:hover) {
-    flex: 0.8;
-}
-
-.event-recap-card img {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+.event-recap-thumbnail {
+    width: 100%;
     height: 400px;
-    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.event-recap-thumbnail img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.event-recap-card:hover .event-recap-thumbnail img {
+    transform: scale(1.1);
 }
 
 .event-recap-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    object-fit: cover;
-    height: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 75%, transparent 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
-    padding: 24px;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    text-align: left;
-}
-
-.event-recap-card:hover .event-recap-overlay {
-    opacity: 1;
-    transition: opacity 0.3s ease 0.25s;
+    padding: 16px 0;
 }
 
 .event-recap-overlay h3 {
-    color: var(--white);
+    color: var(--text-dark);
 }
 
 .event-recap-overlay p {
-    color: var(--white);
+    color: var(--text-dark);
+}
+
+.event-recap-overlay p:not(.blog-date) {
+    display: none;
 }
 
 .event-recap-overlay .service-learn-more {
-    color: var(--white);
+    display: none;
 }
 
 /* Illustrations Section */
@@ -1588,7 +1570,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 0;
+    padding: 1.5rem 1rem 1.5rem 0;
     cursor: pointer;
     font-size: 1.1rem;
     font-weight: 500;
@@ -2586,6 +2568,10 @@ h2 .line.animate {
     padding: 16px 0px;
 }
 
+.blog-excerpt {
+    display: none;
+}
+
 /* Blog Post Page */
 .blog-post {
     padding: 120px 20px 80px;
@@ -2711,15 +2697,11 @@ h2 .line.animate {
 }
 
 body.nav-open .hamburger-btn span:nth-child(1) {
-    transform: translateY(6.5px) rotate(45deg);
+    transform: translateY(3.25px) rotate(45deg);
 }
 
 body.nav-open .hamburger-btn span:nth-child(2) {
-    opacity: 0;
-}
-
-body.nav-open .hamburger-btn span:nth-child(3) {
-    transform: translateY(-6.5px) rotate(-45deg);
+    transform: translateY(-3.25px) rotate(-45deg);
 }
 
 .nav-drawer {
@@ -2747,7 +2729,7 @@ body.nav-open .nav-drawer {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 1.5rem;
     text-align: center;
     padding: 0;
     margin: 0;
@@ -2755,13 +2737,12 @@ body.nav-open .nav-drawer {
 
 .nav-drawer-links li a {
     font-family: 'Mazius Display', sans-serif;
-    font-size: 2.25rem;
+    font-size: 2rem;
     font-weight: 200;
     font-style: italic;
     color: var(--text-dark);
     text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05rem;
     transition: color 0.3s ease;
 }
 
@@ -2795,22 +2776,6 @@ body.nav-open .nav-drawer {
 
 /* Large tablet (max-width: 1200px) */
 @media (max-width: 1200px) {
-    .event-recaps-grid {
-        flex-wrap: wrap;
-    }
-
-    .event-recap-card {
-        flex: 1 1 calc(50% - 15px);
-        min-width: calc(50% - 15px);
-    }
-
-    .event-recap-card:hover {
-        flex: 1 1 calc(50% - 15px);
-    }
-
-    .event-recaps-grid:has(.event-recap-card:hover) .event-recap-card:not(:hover) {
-        flex: 1 1 calc(50% - 15px);
-    }
 }
 
 /* Tablet (max-width: 992px) */
@@ -2881,6 +2846,24 @@ body.nav-open .nav-drawer {
     .contact-form select,
     .contact-form textarea {
         font-size: 16px;
+    }
+
+    /* --- Event Recaps --- */
+    .event-recaps-section {
+        padding: 1rem;
+        margin-top: 15rem;
+    }
+
+    .event-recaps-header {
+        flex-direction: column;
+    }
+
+    .event-recaps-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .event-recap-thumbnail {
+        height: 220px;
     }
 
     /* --- Hero Section --- */
