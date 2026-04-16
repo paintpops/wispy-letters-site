@@ -1,12 +1,42 @@
 [
   {
+    "id": "postcard-personalization-at-miu-miu",
+    "title": "Postcard personalization at Miu Miu",
+    "date": "June 12, 2025",
+    "timestamp": "2025-06-12",
+    "category": "Events",
+    "excerpt": "Postcard personalization at Miu Miu",
+    "image": "Photos/onsite/miu-miu-brand-activation06.JPG",
+    "url": "blog-posts/postcard-personalization-at-miu-miu.html"
+  },
+  {
     "id": "valentines-day-at-cartier",
     "title": "Valentine's Day at Cartier",
     "date": "February 14, 2025",
     "timestamp": "2025-02-14",
     "category": "Events",
     "excerpt": "An unforgettable experience providing on-site calligraphy services at the iconic Cartier boutique for Valentine's Day.",
-    "image": "Photos/onsite/gucci-onsite.jpg",
+    "image": "Photos/onsite/cartier-onsite.jpg",
     "url": "blog-posts/valentines-day-at-cartier.html"
+  },
+  {
+    "id": "luggage-tag-hot-foiling-for-pontera",
+    "title": "Luggage tag hot foiling for Pontera",
+    "date": "February 14, 2025",
+    "timestamp": "2025-02-14",
+    "category": "Events",
+    "excerpt": "Hot foiling personalized luggage tags for Pontera's corporate event, creating lasting keepsakes for their team.",
+    "image": "Photos/onsite/pontera-onsite.jpg",
+    "url": "blog-posts/luggage-tag-hot-foiling-for-pontera.html"
+  },
+  {
+    "id": "customized-tote-bags-for-peach-lily",
+    "title": "Customized tote bags for Peach & Lily",
+    "date": "June 14, 2023",
+    "timestamp": "2023-06-14",
+    "category": "Events",
+    "excerpt": "Customized tote bags for Peach & Lily",
+    "image": "Photos/onsite/peach-and-lily-brand-activation.JPG",
+    "url": "blog-posts/customized-tote-bags-for-peach-lily.html"
   }
 ]
