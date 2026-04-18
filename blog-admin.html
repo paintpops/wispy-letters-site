@@ -30,14 +30,14 @@
             display: flex;
             gap: 10px;
             margin-bottom: 40px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .tab-button {
             padding: 15px 30px;
             background: transparent;
             border: none;
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--text-light);
             font-size: 1rem;
             font-family: 'Cormorant Garamond', serif;
             cursor: pointer;
@@ -75,10 +75,10 @@
         .form-group textarea {
             width: 100%;
             padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.15);
             border-radius: 8px;
-            color: var(--text-light);
+            color: var(--text-dark);
             font-size: 1rem;
             font-family: 'Cormorant Garamond', serif;
         }
@@ -86,10 +86,10 @@
         .form-group input[type="file"] {
             width: 100%;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.15);
             border-radius: 8px;
-            color: var(--text-light);
+            color: var(--text-dark);
             cursor: pointer;
         }
 
@@ -128,8 +128,8 @@
         }
 
         .post-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 12px;
             padding: 20px;
             display: flex;
@@ -138,12 +138,12 @@
         }
 
         .post-info h3 {
-            color: var(--text-light);
+            color: var(--text-dark);
             margin-bottom: 5px;
         }
 
         .post-info p {
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--text-light);
             font-size: 0.9rem;
         }
 
@@ -181,13 +181,13 @@
             gap: 16px;
             margin-bottom: 30px;
             padding: 14px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
 
         .connect-bar p {
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-light);
             font-size: 0.9rem;
             margin: 0;
             flex: 1;
@@ -252,7 +252,7 @@
     <div class="admin-container">
         <div class="admin-header">
             <h1>Blog Admin</h1>
-            <p style="color: rgba(255, 255, 255, 0.7);">Manage your blog posts</p>
+            <p style="color: var(--text-light);">Manage your blog posts</p>
         </div>
 
         <div class="connect-bar">

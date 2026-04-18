@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             <label class="form-label" for="contact-message">Tell me about your project*</label>
                             <textarea id="contact-message" name="message" placeholder="Please include as many details as possible so I can get back to you with an accurate quote and timeline" rows="5" required></textarea>
                         </div>
-                        <div class="form-status" style="display:none"></div>
                         <button type="submit" class="submit-button">Send Message</button>
                     </form>
                 </div>
@@ -102,10 +101,23 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
+        // Toast helper
+        function showToast(message) {
+            let toast = document.querySelector('.toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.className = 'toast';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.classList.add('visible');
+            clearTimeout(toast._dismissTimer);
+            toast._dismissTimer = setTimeout(() => toast.classList.remove('visible'), 4000);
+        }
+
         // Web3Forms submission
         const form = document.querySelector('.contact-form');
-        const statusEl = document.querySelector('.form-status');
-        if (form && statusEl) {
+        if (form) {
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const submitBtn = form.querySelector('.submit-button');
@@ -121,18 +133,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     if (data.success) {
                         form.reset();
-                        statusEl.textContent = 'Thank you! Your message has been sent. I\'ll be in touch soon.';
-                        statusEl.style.display = 'block';
-                        statusEl.style.color = 'var(--text-dark)';
-                        submitBtn.textContent = 'Send Message';
-                        submitBtn.disabled = false;
+                        showToast('Message sent! I\'ll be in touch soon.');
                     } else {
                         throw new Error(data.message || 'Submission failed');
                     }
                 } catch (error) {
-                    statusEl.textContent = 'Something went wrong. Please try again or email me directly.';
-                    statusEl.style.display = 'block';
-                    statusEl.style.color = '#c0392b';
+                    showToast('Something went wrong. Please try again.');
+                } finally {
                     submitBtn.textContent = 'Send Message';
                     submitBtn.disabled = false;
                 }
