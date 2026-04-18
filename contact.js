@@ -7,25 +7,29 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="container">
                 <img src="${basePath}SectionTitles/contact_title.svg" alt="Let's Create Something Beautiful">
                 <div class="contact-content-wrapper">
-                    <form class="contact-form">
+                    <form class="contact-form" method="POST" action="https://api.web3forms.com/submit">
+                        <input type="hidden" name="access_key" value="df64a07f-a6fe-4c41-9009-09376db4cc52">
+                        <input type="hidden" name="subject" value="New inquiry from Wispy Letters">
+                        <input type="hidden" name="redirect" value="false">
+                        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
                         <div class="form-row">
                             <div class="form-field">
                                 <label class="form-label" for="contact-name">Full Name*</label>
-                                <input type="text" id="contact-name" placeholder="Please provide your full name" required>
+                                <input type="text" id="contact-name" name="name" placeholder="Please provide your full name" required>
                             </div>
                             <div class="form-field">
                                 <label class="form-label" for="contact-email">Email address*</label>
-                                <input type="email" id="contact-email" placeholder="Please provide your email address" required>
+                                <input type="email" id="contact-email" name="email" placeholder="Please provide your email address" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-field">
                                 <label class="form-label" for="contact-phone">Phone Number</label>
-                                <input type="tel" id="contact-phone" placeholder="(XXX) XXX-XXXX" maxlength="14">
+                                <input type="tel" id="contact-phone" name="phone" placeholder="(XXX) XXX-XXXX" maxlength="14">
                             </div>
                             <div class="form-field">
                                 <label class="form-label" for="contact-service">What service are you interested in?*</label>
-                                <select id="contact-service" required>
+                                <select id="contact-service" name="service" required>
                                     <option value="">Select a Service</option>
                                     <option value="event-calligraphy">Live event calligraphy / engraving</option>
                                     <option value="custom-commission">Custom commissions / gifting</option>
@@ -37,24 +41,25 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="form-row">
                             <div class="form-field">
                                 <label class="form-label">How did you hear about Wispy Letters?*</label>
-                                <select class="referral-select" required>
+                                <select class="referral-select" name="referral" required>
                                     <option value="">Select an option</option>
                                     <option value="search-engine">Google / search engine</option>
                                     <option value="referral">Word of mouth / referral</option>
                                     <option value="instagram">Instagram</option>
                                     <option value="other">Other</option>
                                 </select>
-                                <input type="text" class="referral-other" placeholder="Please specify" style="display:none; margin-top: 10px;">
+                                <input type="text" class="referral-other" name="referral_other" placeholder="Please specify" style="display:none; margin-top: 10px;">
                             </div>
                             <div class="form-field">
                                 <label class="form-label">When is your event / when do you need your items?*</label>
-                                <input type="date" class="date-picker" required>
+                                <input type="date" class="date-picker" name="event_date" required>
                             </div>
                         </div>
                         <div class="form-field">
-                                <label class="form-label" for="contact-message">Tell me about your project*</label>
-                                <textarea id="contact-message" placeholder="Please include as many details as possible so I can get back to you with an accurate quote and timeline" rows="5" required></textarea>
+                            <label class="form-label" for="contact-message">Tell me about your project*</label>
+                            <textarea id="contact-message" name="message" placeholder="Please include as many details as possible so I can get back to you with an accurate quote and timeline" rows="5" required></textarea>
                         </div>
+                        <div class="form-status" style="display:none"></div>
                         <button type="submit" class="submit-button">Send Message</button>
                     </form>
                 </div>
@@ -65,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="social-links">
                         <a href="https://www.instagram.com/wispyletters/" target="_blank">Instagram</a>
                         <a href="https://www.etsy.com/shop/wispyletters" target="_blank">Etsy</a>
-
                     </div>
                 </div>
             </footer>
@@ -76,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (placeholder) {
         placeholder.outerHTML = contactHTML;
 
-        // Show/hide write-in field when "Other" is selected
+        // Show/hide write-in field when "Other" is selected for referral
         const referralSelect = document.querySelector('.referral-select');
         const referralOther = document.querySelector('.referral-other');
         if (referralSelect && referralOther) {
@@ -85,6 +89,57 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
+        // Phone number auto-formatting
+        const phoneInput = document.getElementById('contact-phone');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function() {
+                const digits = this.value.replace(/\D/g, '').slice(0, 10);
+                let formatted = '';
+                if (digits.length > 0) formatted = '(' + digits.slice(0, 3);
+                if (digits.length >= 4) formatted += ') ' + digits.slice(3, 6);
+                if (digits.length >= 7) formatted += '-' + digits.slice(6, 10);
+                this.value = formatted;
+            });
+        }
+
+        // Web3Forms submission
+        const form = document.querySelector('.contact-form');
+        const statusEl = document.querySelector('.form-status');
+        if (form && statusEl) {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const submitBtn = form.querySelector('.submit-button');
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+
+                try {
+                    const response = await fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        body: new FormData(form)
+                    });
+                    const data = await response.json();
+
+                    if (data.success) {
+                        form.reset();
+                        statusEl.textContent = 'Thank you! Your message has been sent. I\'ll be in touch soon.';
+                        statusEl.style.display = 'block';
+                        statusEl.style.color = 'var(--text-dark)';
+                        submitBtn.textContent = 'Send Message';
+                        submitBtn.disabled = false;
+                    } else {
+                        throw new Error(data.message || 'Submission failed');
+                    }
+                } catch (error) {
+                    statusEl.textContent = 'Something went wrong. Please try again or email me directly.';
+                    statusEl.style.display = 'block';
+                    statusEl.style.color = '#c0392b';
+                    submitBtn.textContent = 'Send Message';
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        // Contact section background texture observer
         const contactEl = document.querySelector('#contact');
         if (contactEl) {
             const isMobile = window.innerWidth <= 768;
