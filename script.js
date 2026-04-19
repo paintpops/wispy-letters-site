@@ -195,6 +195,7 @@ if (introSection) {
         if (sectionRect.top > 0) {
             introImages.forEach(image => { image.style.opacity = 0; });
             introContent.style.opacity = 0;
+            introContent.style.pointerEvents = 'none';
             return;
         }
 
@@ -205,6 +206,7 @@ if (introSection) {
                 image.style.opacity = 0;
             });
             introContent.style.opacity = 0;
+            introContent.style.pointerEvents = 'none';
             return;
         }
 
@@ -241,6 +243,7 @@ if (introSection) {
 
             // Keep content visible and centered
             introContent.style.opacity = 1;
+            introContent.style.pointerEvents = '';
             introContent.style.transform = 'translate(-50%, -50%)';
             introContent.style.filter = 'blur(0px)';
         }
