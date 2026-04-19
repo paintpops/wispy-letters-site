@@ -244,6 +244,81 @@
         .ck-editor__editable {
             min-height: 400px;
         }
+
+        .photo-grid-builder {
+            border: 1px dashed rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .photo-grid-builder > label {
+            display: block;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+
+        .photo-grid-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .btn-col {
+            padding: 8px 20px;
+            background: transparent;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 50px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.95rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-col.active,
+        .btn-col:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #f3f1ec;
+        }
+
+        .photo-grid-inputs {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .grid-photo-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            color: var(--text-dark);
+            font-size: 1rem;
+            font-family: 'Cormorant Garamond', serif;
+            box-sizing: border-box;
+        }
+
+        .btn-insert-grid {
+            padding: 10px 24px;
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-family: 'Cormorant Garamond', serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-insert-grid:hover {
+            background: var(--primary-color);
+            color: #f3f1ec;
+        }
     </style>
 </head>
 <body>
@@ -314,6 +389,19 @@
                     <div id="editor"></div>
                 </div>
 
+                <!-- Photo Grid Builder -->
+                <div class="photo-grid-builder">
+                    <label>Insert Photo Grid</label>
+                    <div class="photo-grid-controls">
+                        <button type="button" class="btn-col" id="col1Btn" onclick="setGridColumns(1)">1 Column</button>
+                        <button type="button" class="btn-col active" id="col2Btn" onclick="setGridColumns(2)">2 Columns</button>
+                        <button type="button" class="btn-col" id="col3Btn" onclick="setGridColumns(3)">3 Columns</button>
+                    </div>
+                    <div class="photo-grid-inputs" id="photoGridInputs"></div>
+                    <p style="font-size:0.85rem; color:var(--text-light); margin: 0 0 12px;">Select photos to upload. Connect your site folder first to auto-copy them.</p>
+                    <button type="button" class="btn-insert-grid" onclick="insertPhotoGrid()">Insert into post ↑</button>
+                </div>
+
                 <button type="submit" class="btn-primary" id="submitButton">Publish Post</button>
                 <button type="button" class="btn-primary" id="cancelEdit" style="display: none; background: #6c757d; margin-left: 10px;">Cancel</button>
             </form>
@@ -376,12 +464,20 @@
         // --- CKEditor ---
         ClassicEditor
             .create(document.querySelector('#editor'), {
-                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'blockQuote', 'undo', 'redo'],
+                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'blockQuote', 'insertImage', '|', 'undo', 'redo'],
                 heading: {
                     options: [
                         { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
                         { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
                         { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
+                    ]
+                },
+                image: {
+                    toolbar: ['imageStyle:block', 'imageStyle:side', '|', 'imageTextAlternative']
+                },
+                generalHtmlSupport: {
+                    allow: [
+                        { name: 'div', attributes: true, classes: true, styles: true }
                     ]
                 }
             })
@@ -399,18 +495,41 @@
             });
         });
 
-        // --- Image preview (no upload — user places image in Photos/ manually) ---
-        document.getElementById('postImage').addEventListener('change', function(e) {
+        // --- Copy a file to Photos/blog/ via File System Access API ---
+        async function copyPhotoToBlog(file) {
+            if (!siteRootHandle) return false;
+            try {
+                const photosDir = await siteRootHandle.getDirectoryHandle('Photos', { create: false });
+                const blogDir = await photosDir.getDirectoryHandle('blog', { create: true });
+                const fh = await blogDir.getFileHandle(file.name, { create: true });
+                const writable = await fh.createWritable();
+                await writable.write(await file.arrayBuffer());
+                await writable.close();
+                return true;
+            } catch (e) {
+                console.error('Could not copy photo:', e);
+                return false;
+            }
+        }
+
+        // --- Featured image upload ---
+        document.getElementById('postImage').addEventListener('change', async function(e) {
             const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImg').src = e.target.result;
-                    document.getElementById('imagePreview').style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-                document.getElementById('currentImage').value = `Photos/blog/${file.name}`;
-                showSuccess(`Image selected. Make sure "${file.name}" is copied into the Photos/blog/ folder.`);
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                document.getElementById('previewImg').src = ev.target.result;
+                document.getElementById('imagePreview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+            document.getElementById('currentImage').value = `Photos/blog/${file.name}`;
+            if (siteRootHandle) {
+                const copied = await copyPhotoToBlog(file);
+                showSuccess(copied
+                    ? `"${file.name}" copied to Photos/blog/ ✓`
+                    : `Could not auto-copy. Manually place "${file.name}" in Photos/blog/.`);
+            } else {
+                showError(`Site folder not connected — manually copy "${file.name}" to Photos/blog/ before saving.`);
             }
         });
 
@@ -489,36 +608,63 @@
             document.getElementById('previewImg').src = post.image;
             document.getElementById('imagePreview').style.display = 'block';
 
-            // Fetch the actual HTML file and extract content
-            let content = '';
-            try {
-                const res = await fetch(`blog-posts/${postId}.html?nocache=${Date.now()}`);
-                if (res.ok) {
-                    const html = await res.text();
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const contentDiv = doc.querySelector('.blog-post-content');
-                    if (contentDiv) content = contentDiv.innerHTML.trim();
-                }
-            } catch (e) {
-                console.error('Could not fetch post HTML:', e);
+            // Extract content from HTML string
+            function extractContent(html) {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const contentDiv = doc.querySelector('.blog-post-content');
+                return contentDiv ? contentDiv.innerHTML.trim() : '';
             }
 
-            // Fallback to localStorage if fetch failed
-            if (!content) {
-                const saved = localStorage.getItem(`blogPost_${postId}`);
-                if (saved) {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(saved, 'text/html');
-                    const contentDiv = doc.querySelector('.blog-post-content');
-                    if (contentDiv) content = contentDiv.innerHTML.trim();
+            let content = '';
+
+            // 1. Try File System Access handle (works with file:// URLs too)
+            if (siteRootHandle && !content) {
+                try {
+                    const blogPostsDir = await siteRootHandle.getDirectoryHandle('blog-posts');
+                    const fh = await blogPostsDir.getFileHandle(`${postId}.html`);
+                    const file = await fh.getFile();
+                    content = extractContent(await file.text());
+                } catch (e) {
+                    console.error('File handle read failed:', e);
                 }
             }
+
+            // 2. Try fetch (works when served via Live Server)
+            if (!content) {
+                try {
+                    const res = await fetch(`blog-posts/${postId}.html?nocache=${Date.now()}`);
+                    if (res.ok) content = extractContent(await res.text());
+                } catch (e) {
+                    console.error('Could not fetch post HTML:', e);
+                }
+            }
+
+            // 3. Fallback to localStorage
+            if (!content) {
+                const saved = localStorage.getItem(`blogPost_${postId}`);
+                if (saved) content = extractContent(saved);
+            }
+
+            // Convert saved grid HTML back to shortcodes so CKEditor can display them
+            content = content.replace(
+                /<div class="photo-grid-(\d+)col">([\s\S]*?)<\/div>/g,
+                (match, cols, inner) => {
+                    const paths = [];
+                    const re = /<img[^>]+src="([^"]+)"/g;
+                    let m;
+                    while ((m = re.exec(inner)) !== null) {
+                        paths.push(m[1].replace(/^\.\.\//, ''));
+                    }
+                    return paths.length ? `[photo-grid-${cols}: ${paths.join(' | ')}]` : '';
+                }
+            );
 
             editor.setData(content);
             document.getElementById('submitButton').textContent = 'Update Post';
             document.getElementById('cancelEdit').style.display = 'inline-block';
             document.querySelector('[data-tab="create"]').click();
+            document.querySelector('[data-tab="create"]').textContent = 'Edit Post';
             showSuccess('Editing: ' + post.title);
         }
 
@@ -584,6 +730,7 @@
             try {
                 await writeSiteFile('blog-posts/posts.json', json);
                 await updateBlogHTML();
+                await updateOnsiteHTML();
             } catch (e) {
                 if (e.message === 'no-handle') {
                     downloadFile('posts.json', json, 'application/json');
@@ -628,6 +775,49 @@
             }
         }
 
+        // Rebuild the event-recaps-grid in onsite.html with the latest 4 posts
+        async function updateOnsiteHTML() {
+            if (!siteRootHandle) return;
+            try {
+                const fh = await siteRootHandle.getFileHandle('onsite.html');
+                const file = await fh.getFile();
+                const original = await file.text();
+
+                const sorted = [...posts].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                const latest4 = sorted.slice(0, 4);
+
+                const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+                const cards = latest4.map(post => `                <a href="${post.url}" class="event-recap-card">
+                    <div class="event-recap-thumbnail">
+                        <img src="${post.image}" alt="${esc(post.title)}">
+                    </div>
+                    <div class="event-recap-overlay">
+                        <h4>${esc(post.title)}</h4>
+                        <p class="blog-date">${post.date}</p>
+                        <p>${esc(post.excerpt)}</p>
+                        <span class="service-learn-more">
+                            <span>Read more</span>
+                            <svg class="arrow-icon" width="32" height="16" viewBox="0 0 32 16">
+                                <path class="arrow" d="M1 8 L28 8 M28 8 L24 4 M28 8 L24 12" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                </a>`).join('\n');
+
+                const updated = original.replace(
+                    /(<div class="event-recaps-grid">)[\s\S]*?(<\/div>\s*<\/div>\s*<\/section>)/,
+                    `$1\n${cards}\n            $2`
+                );
+
+                const writable = await (await siteRootHandle.getFileHandle('onsite.html', { create: false })).createWritable();
+                await writable.write(updated);
+                await writable.close();
+            } catch (e) {
+                console.error('Could not update onsite.html:', e);
+            }
+        }
+
         function buildBlogHTML() {
             // Returns just the cards HTML for manual placement
             const sorted = [...posts].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
@@ -645,6 +835,20 @@
 
         // --- Build and save post HTML ---
         async function createPostHTML(post, content) {
+            // Expand photo grid shortcodes → real HTML grids
+            // Match both bare shortcodes and <p>-wrapped ones (CKEditor wraps text in <p>)
+            content = content.replace(
+                /(?:<p>\s*)?\[photo-grid-(\d+):\s*([^\]]+)\](?:\s*<\/p>)?/g,
+                (match, cols, pathsStr) => {
+                    const imgs = pathsStr.split('|').map(p => {
+                        const src = p.trim().replace(/^Photos\//, '../Photos/');
+                        return `<img src="${src}" alt="">`;
+                    }).join('');
+                    return `<div class="photo-grid-${cols}col">${imgs}</div>`;
+                }
+            );
+            // Rewrite any remaining root-relative Photos/ paths (from insertImage toolbar)
+            content = content.replace(/src="Photos\//g, 'src="../Photos/');
             const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -662,7 +866,7 @@
     <article class="blog-post">
         <div class="container">
             <div class="blog-post-header">
-                <h1>${post.title}</h1>
+                <h2>${post.title}</h2>
                 <div class="blog-post-meta">
                     <span class="blog-post-date">${post.date}</span>
                     <span class="blog-post-category">${post.category}</span>
@@ -723,10 +927,92 @@
             document.getElementById('currentImage').value = '';
             document.getElementById('submitButton').textContent = 'Publish Post';
             document.getElementById('cancelEdit').style.display = 'none';
+            document.querySelector('[data-tab="create"]').textContent = 'Create New Post';
             editingPostId = null;
         }
 
         document.getElementById('cancelEdit').addEventListener('click', resetForm);
+
+        // --- Photo Grid Builder ---
+        let gridColumns = 2;
+        const gridPhotoPaths = {}; // col index → path
+
+        function setGridColumns(n) {
+            gridColumns = n;
+            document.getElementById('col1Btn').classList.toggle('active', n === 1);
+            document.getElementById('col2Btn').classList.toggle('active', n === 2);
+            document.getElementById('col3Btn').classList.toggle('active', n === 3);
+            renderGridInputs();
+        }
+
+        function renderGridInputs() {
+            for (let key in gridPhotoPaths) delete gridPhotoPaths[key];
+            const container = document.getElementById('photoGridInputs');
+            let html = '';
+            for (let i = 0; i < gridColumns; i++) {
+                html += `
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <label style="font-size:0.8rem; color:var(--text-light);">Column ${i + 1}</label>
+                    <input type="file" class="grid-photo-file" accept="image/*" data-col="${i}"
+                        style="padding:8px; background:rgba(0,0,0,0.03); border:1px solid rgba(0,0,0,0.15); border-radius:8px; cursor:pointer;">
+                    <div class="grid-photo-preview" data-col="${i}" style="display:none;"></div>
+                </div>`;
+            }
+            container.innerHTML = html;
+            container.querySelectorAll('.grid-photo-file').forEach(input => {
+                input.addEventListener('change', () => handleGridPhoto(input));
+            });
+        }
+
+        async function handleGridPhoto(input) {
+            const col = parseInt(input.dataset.col);
+            const file = input.files[0];
+            if (!file) return;
+
+            const path = `Photos/blog/${file.name}`;
+            gridPhotoPaths[col] = path;
+
+            // Show preview
+            const preview = document.querySelector(`.grid-photo-preview[data-col="${col}"]`);
+            const reader = new FileReader();
+            reader.onload = ev => {
+                preview.innerHTML = `<img src="${ev.target.result}" style="width:100%; height:100px; object-fit:cover; border-radius:6px;">`;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+
+            // Auto-copy to Photos/blog/ if folder connected
+            if (siteRootHandle) {
+                await copyPhotoToBlog(file);
+            }
+        }
+
+        function insertPhotoGrid() {
+            const paths = [];
+            for (let i = 0; i < gridColumns; i++) {
+                if (gridPhotoPaths[i]) paths.push(gridPhotoPaths[i]);
+            }
+            if (!paths.length) {
+                showError('Please select at least one photo.');
+                return;
+            }
+            if (!siteRootHandle) {
+                showError('Connect your site folder first so photos are auto-copied to Photos/blog/.');
+            }
+
+            // Insert a shortcode placeholder that createPostHTML() will expand
+            // (bypasses CKEditor schema — 100% reliable)
+            const shortcode = `[photo-grid-${gridColumns}: ${paths.join(' | ')}]`;
+            editor.model.change(writer => {
+                const insertPosition = editor.model.document.selection.getFirstPosition();
+                writer.insertText(shortcode, insertPosition);
+            });
+
+            renderGridInputs();
+            showSuccess(`${gridColumns}-column photo grid added. It will render in the published post.`);
+        }
+
+        renderGridInputs();
 
         function showSuccess(message) {
             const el = document.getElementById('successMessage');

@@ -2695,6 +2695,71 @@ h2 .line.animate {
     transform: translateX(-5px);
 }
 
+/* Photo Grids (inserted via blog admin) */
+.photo-grid-1col {
+    margin: 2rem 0;
+    max-width: 100%;
+}
+
+.photo-grid-1col img {
+    width: 100%;
+    display: block;
+}
+
+.photo-grid-2col,
+.photo-grid-3col {
+    display: grid;
+    gap: 12px;
+    margin: 2rem 0;
+    max-width: 100%;
+}
+
+.photo-grid-2col {
+    grid-template-columns: 1fr 1fr;
+}
+
+.photo-grid-3col {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* Prevent grid items from overflowing their column */
+.photo-grid-2col > *,
+.photo-grid-3col > * {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.photo-grid-2col img,
+.photo-grid-3col img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+}
+
+/* Handle CKEditor figure.image wrappers */
+.photo-grid-2col figure.image,
+.photo-grid-3col figure.image {
+    margin: 0 !important;
+    width: 100% !important;
+    display: block !important;
+    float: none !important;
+}
+
+.photo-grid-2col figure.image img,
+.photo-grid-3col figure.image img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .photo-grid-2col,
+    .photo-grid-3col {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ============================================
    HAMBURGER NAVIGATION
    ============================================ */
@@ -2966,7 +3031,7 @@ body.nav-open .nav-drawer {
         order: -1;
         flex: none;
         width: 100%;
-        aspect-ratio: 4/3;
+        aspect-ratio: 3/4;
         max-height: 70vw;
         transform: none !important;
     }
